@@ -6,6 +6,7 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
+import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
 // Firebase設定
 const firebaseConfig = {
@@ -22,23 +23,48 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const analytics = getAnalytics(app);
+const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
 // 許可するドメイン
 const ALLOWED_DOMAIN = 'wivid.co.jp';
 
 /* ==========================================
+   ログイン履歴を記録
+   ========================================== */
+async function recordLoginHistory(user) {
+  try {
+    await addDoc(collection(db, 'login_history'), {
+      user_email: user.email,
+      user_name: user.displayName || '',
+      user_id: user.uid,
+      login_at: serverTimestamp(),
+      user_agent: navigator.userAgent,
+      ip_address: 'N/A' // クライアント側では取得不可
+    });
+    console.log('📝 ログイン履歴を記録しました');
+  } catch (error) {
+    console.error('ログイン履歴記録エラー:', error);
+    // エラーがあってもログインは継続
+  }
+}
+
+/* ==========================================
    Googleサインイン
    ========================================== */
 export function signInWithGoogle() {
   return signInWithPopup(auth, provider)
-    .then((result) => {
+    .then(async (result) => {
       const user = result.user;
       const email = user.email;
       
       // @wivid.co.jpドメインチェック
       if (email.endsWith(`@${ALLOWED_DOMAIN}`)) {
         console.log('✅ 認証成功:', email);
+        
+        // ログイン履歴を記録
+        await recordLoginHistory(user);
+        
         return { success: true, user: user };
       } else {
         // 許可されていないドメインの場合、サインアウト
