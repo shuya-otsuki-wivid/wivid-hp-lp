@@ -88,7 +88,11 @@ function createHPCard(data) {
     // data-属性を設定
     const roleMap = {
         '経営層': 'executive',
-        '人事責任者': 'hr'
+        '人事責任者': 'hr',
+        '事業責任者': 'business',
+        'マネージャー': 'manager',
+        'リーダー': 'leader',
+        '特別表彰受賞者': 'award'
     };
     const contactMap = {
         '個別面談': 'individual',
@@ -101,7 +105,7 @@ function createHPCard(data) {
     card.dataset.contact = contactMap[data.contact_format] || 'individual';
     
     // カードヘッダーのクラス
-    const headerClass = data.position_level === '経営層' ? 'executive' : 'hr';
+    const headerClass = roleMap[data.position_level] || 'executive';
     
     // HP氏名を構築
     let hpNamesHTML = '';

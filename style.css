@@ -556,6 +556,22 @@ section {
     background: linear-gradient(135deg, var(--color-blue), #0080bb);
 }
 
+.card-header.business {
+    background: linear-gradient(135deg, #00A0E9, #0080c0);
+}
+
+.card-header.manager {
+    background: linear-gradient(135deg, #34a853, #2d8f47);
+}
+
+.card-header.leader {
+    background: linear-gradient(135deg, #fbbc04, #e0a800);
+}
+
+.card-header.award {
+    background: linear-gradient(135deg, #ff6b35, #e55a2b);
+}
+
 .company-info {
     display: flex;
     flex-direction: column;
