@@ -2,21 +2,205 @@
    Wivid HP Tool - JavaScript
    ========================================== */
 
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getFirestore, collection, getDocs, query, where } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+// Firebase設定
+const firebaseConfig = {
+  apiKey: "AIzaSyAWHDKSGNB4t0SF85lE9UNSwzdOJFFu4GA",
+  authDomain: "wivid-hp-lp.firebaseapp.com",
+  projectId: "wivid-hp-lp",
+  storageBucket: "wivid-hp-lp.firebasestorage.app",
+  messagingSenderId: "28034725256",
+  appId: "1:28034725256:web:18bf22169697ff522df63d",
+  measurementId: "G-MTT48T3EDP"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let allHighPerformers = [];
+
 document.addEventListener('DOMContentLoaded', function() {
-    // フィルター機能
-    initFilters();
+    // Firestoreからデータを読み込み
+    loadHighPerformers();
     
     // スムーススクロール
     initSmoothScroll();
-    
-    // スクロールアニメーション
-    initScrollAnimations();
 });
+
+/* ==========================================
+   Firestoreからハイパフォーマー情報を読み込み
+   ========================================== */
+async function loadHighPerformers() {
+    const hpGrid = document.querySelector('.hp-grid');
+    
+    if (!hpGrid) return;
+    
+    hpGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: #999; grid-column: 1 / -1;">データを読み込み中...</div>';
+    
+    try {
+        const q = query(collection(db, 'high_performers'), where('is_active', '==', true));
+        const querySnapshot = await getDocs(q);
+        
+        if (querySnapshot.empty) {
+            hpGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: #999; grid-column: 1 / -1;">公開中のハイパフォーマー情報がありません。</div>';
+            return;
+        }
+        
+        hpGrid.innerHTML = '';
+        allHighPerformers = [];
+        
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            allHighPerformers.push(data);
+            
+            const card = createHPCard(data);
+            hpGrid.appendChild(card);
+        });
+        
+        // ハイパフォーマー数を更新
+        const totalCountEl = document.getElementById('totalHPCount');
+        if (totalCountEl) {
+            totalCountEl.textContent = querySnapshot.size;
+        }
+        
+        // フィルター機能を初期化
+        initFilters();
+        
+        // スクロールアニメーション
+        initScrollAnimations();
+        
+    } catch (error) {
+        console.error('データ読み込みエラー:', error);
+        hpGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: #E4007F; grid-column: 1 / -1;">データの読み込みに失敗しました。</div>';
+    }
+}
+
+/* ==========================================
+   HPカードを生成
+   ========================================== */
+function createHPCard(data) {
+    const card = document.createElement('div');
+    card.className = 'hp-card';
+    
+    // data-属性を設定
+    const roleMap = {
+        '経営層': 'executive',
+        '人事責任者': 'hr'
+    };
+    const contactMap = {
+        '個別面談': 'individual',
+        '座談会': 'group',
+        'イベント': 'group'
+    };
+    
+    card.dataset.role = roleMap[data.position_level] || 'executive';
+    card.dataset.level = data.introduction_level || 'C';
+    card.dataset.contact = contactMap[data.contact_format] || 'individual';
+    
+    // カードヘッダーのクラス
+    const headerClass = data.position_level === '経営層' ? 'executive' : 'hr';
+    
+    // HP氏名を構築
+    let hpNamesHTML = '';
+    if (data.hp_name_1) {
+        hpNamesHTML += `<h3>${data.hp_name_1}${data.hp_role_1 ? 'さん（' + data.hp_role_1 + '）' : 'さん'}</h3>`;
+    }
+    if (data.hp_name_2) {
+        hpNamesHTML += `<h3>${data.hp_name_2}${data.hp_role_2 ? 'さん（' + data.hp_role_2 + '）' : 'さん'}</h3>`;
+    }
+    if (!hpNamesHTML) {
+        hpNamesHTML = '<h3>担当者</h3>';
+    }
+    
+    // 役職バッジ
+    let roleBadge = data.position_detail || data.position_level || '—';
+    
+    // 接触形式アイコン
+    const contactIcon = data.contact_format === '個別面談' ? '📍' : '👥';
+    
+    // 紹介レベルのクラス
+    const levelClass = `level-${(data.introduction_level || 'c').toLowerCase().replace('-', '-minus').replace('+', '-plus')}`;
+    
+    card.innerHTML = `
+        <div class="card-header ${headerClass}">
+            <div class="company-info">
+                <span class="company-name">${data.company_name || '企業名不明'}</span>
+                <span class="company-size">${data.company_size || '規模不明'}</span>
+            </div>
+            <div class="role-badge">${roleBadge}</div>
+        </div>
+        <div class="card-body">
+            <div class="hp-names">
+                ${hpNamesHTML}
+            </div>
+            ${data.background ? `
+            <div class="hp-profile">
+                <p class="profile-item"><strong>経歴：</strong>${data.background}</p>
+                ${data.age_range ? `<p class="profile-item"><strong>年齢層：</strong>${data.age_range}</p>` : ''}
+            </div>
+            ` : ''}
+            ${data.achievements ? `
+            <div class="hp-features">
+                <p class="profile-item"><strong>成果・特徴：</strong>${data.achievements}</p>
+            </div>
+            ` : ''}
+            <div class="contact-info">
+                <span class="contact-type">${contactIcon} ${data.contact_format || '—'}${data.contact_format_detail ? ' (' + data.contact_format_detail + ')' : ''}</span>
+                <span class="sales-person">担当：${data.sales_contact || '—'}</span>
+            </div>
+            ${data.insights ? `
+            <div class="special-note">
+                <p>⭐ ${data.insights}</p>
+            </div>
+            ` : ''}
+        </div>
+        <div class="card-requirements">
+            <h4>紹介可能条件</h4>
+            <div class="req-grid">
+                ${data.education_requirement ? `
+                <div class="req-item">
+                    <span class="req-label">学歴</span>
+                    <span class="req-value">${data.education_requirement}</span>
+                </div>
+                ` : ''}
+                <div class="req-item">
+                    <span class="req-label">レベル</span>
+                    <span class="level-tag ${levelClass}">${data.introduction_level || '—'}</span>
+                </div>
+                ${data.experience_requirement ? `
+                <div class="req-item">
+                    <span class="req-label">経験</span>
+                    <span class="req-value">${data.experience_requirement}</span>
+                </div>
+                ` : ''}
+                ${data.student_mindset ? `
+                <div class="req-item">
+                    <span class="req-label">志向性</span>
+                    <span class="req-value">${data.student_mindset}</span>
+                </div>
+                ` : ''}
+                ${data.introduction_flow ? `
+                <div class="req-item">
+                    <span class="req-label">紹介フロー</span>
+                    <span class="req-value">${data.introduction_flow}</span>
+                </div>
+                ` : ''}
+            </div>
+        </div>
+        <div class="card-footer">
+            <button class="detail-btn" onclick="toggleDetails(this)">詳細を見る</button>
+        </div>
+    `;
+    
+    return card;
+}
 
 /* ==========================================
    詳細表示トグル
    ========================================== */
-function toggleDetails(button) {
+window.toggleDetails = function(button) {
     const card = button.closest('.hp-card');
     const requirements = card.querySelector('.card-requirements');
     
@@ -27,7 +211,7 @@ function toggleDetails(button) {
         requirements.classList.add('show');
         button.textContent = '閉じる';
     }
-}
+};
 
 /* ==========================================
    フィルター機能
@@ -93,15 +277,16 @@ function filterCards(cards, filters) {
     });
     
     // フィルター結果が0件の場合のメッセージ
-    const noResultsMsg = document.querySelector('.no-results');
+    const hpGrid = document.querySelector('.hp-grid');
+    let noResultsMsg = hpGrid.querySelector('.no-results');
+    
     if (visibleCount === 0) {
         if (!noResultsMsg) {
-            const grid = document.querySelector('.hp-grid');
             const msg = document.createElement('div');
             msg.className = 'no-results';
             msg.innerHTML = '<p>条件に合うハイパフォーマーが見つかりません。フィルターを変更してください。</p>';
             msg.style.cssText = 'text-align: center; padding: 40px; color: #a0a0a0; grid-column: 1 / -1;';
-            grid.appendChild(msg);
+            hpGrid.appendChild(msg);
         }
     } else {
         if (noResultsMsg) {
