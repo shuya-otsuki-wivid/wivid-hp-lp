@@ -37,20 +37,14 @@ async function loadHighPerformers() {
     
     if (!hpGrid) return;
     
-    hpGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: #999; grid-column: 1 / -1;">データを読み込み中...</div>';
-    
     try {
         const q = query(collection(db, 'high_performers'), where('is_active', '==', true));
         const querySnapshot = await getDocs(q);
         
-        if (querySnapshot.empty) {
-            hpGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: #999; grid-column: 1 / -1;">公開中のハイパフォーマー情報がありません。</div>';
-            return;
-        }
+        // 既存の静的カード数を取得
+        const existingCards = hpGrid.querySelectorAll('.hp-card').length;
         
-        hpGrid.innerHTML = '';
-        allHighPerformers = [];
-        
+        // Firestoreからのデータを追加
         querySnapshot.forEach((doc) => {
             const data = doc.data();
             allHighPerformers.push(data);
@@ -59,11 +53,14 @@ async function loadHighPerformers() {
             hpGrid.appendChild(card);
         });
         
-        // ハイパフォーマー数を更新
+        // ハイパフォーマー数を更新（静的 + 動的）
         const totalCountEl = document.getElementById('totalHPCount');
         if (totalCountEl) {
-            totalCountEl.textContent = querySnapshot.size;
+            const totalCount = existingCards + querySnapshot.size;
+            totalCountEl.textContent = totalCount;
         }
+        
+        console.log(`✅ 静的データ: ${existingCards}件, Firestoreデータ: ${querySnapshot.size}件`);
         
         // フィルター機能を初期化
         initFilters();
@@ -72,8 +69,12 @@ async function loadHighPerformers() {
         initScrollAnimations();
         
     } catch (error) {
-        console.error('データ読み込みエラー:', error);
-        hpGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: #E4007F; grid-column: 1 / -1;">データの読み込みに失敗しました。</div>';
+        console.error('❌ データ読み込みエラー:', error);
+        // エラーが出ても静的データは表示されたまま
+        
+        // フィルター機能を初期化（静的データ用）
+        initFilters();
+        initScrollAnimations();
     }
 }
 
