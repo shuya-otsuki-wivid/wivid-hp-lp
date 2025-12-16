@@ -9,6 +9,30 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase認証チェック -->
+    <script type="module">
+        import { checkAuthState } from './auth.js';
+        
+        // 認証状態をチェック
+        checkAuthState((authState) => {
+            if (!authState.authenticated) {
+                // 未認証の場合、ログインページへリダイレクト
+                window.location.href = 'login.html';
+            } else {
+                // 認証済みの場合、ページを表示
+                document.body.style.display = 'block';
+                console.log('✅ ログイン中:', authState.user.email);
+            }
+        });
+    </script>
+    
+    <style>
+        /* 認証チェック中はページを非表示 */
+        body {
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <!-- ナビゲーション -->
@@ -22,8 +46,9 @@
                 <li><a href="#highperformers">ハイパフォーマー一覧</a></li>
                 <li><a href="#how-to-use">活用方法</a></li>
                 <li><a href="#conditions">紹介条件</a></li>
+                <li><a href="#" id="signOutBtn" style="color: #FFF100;">ログアウト</a></li>
             </ul>
-            <span class="nav-label">Career Designer向け社内ツール</span>
+            <span class="nav-label" id="userEmail">Career Designer向け社内ツール</span>
         </div>
     </nav>
 
@@ -951,5 +976,27 @@
     </footer>
 
     <script src="script.js"></script>
+    
+    <!-- ログアウト機能 -->
+    <script type="module">
+        import { signOutUser, getCurrentUser } from './auth.js';
+        
+        // ユーザー情報を表示
+        const user = getCurrentUser();
+        if (user) {
+            const userEmailLabel = document.getElementById('userEmail');
+            userEmailLabel.textContent = `${user.email}`;
+            userEmailLabel.style.color = '#FFF100';
+        }
+        
+        // ログアウトボタン
+        document.getElementById('signOutBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            if (confirm('ログアウトしますか？')) {
+                await signOutUser();
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
 </body>
 </html>
