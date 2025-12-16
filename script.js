@@ -1,16 +1,10 @@
 /* ==========================================
-   Wivid LP - JavaScript
+   Wivid HP Tool - JavaScript
    ========================================== */
 
 document.addEventListener('DOMContentLoaded', function() {
     // フィルター機能
     initFilters();
-    
-    // FAQアコーディオン
-    initFAQ();
-    
-    // フォーム送信
-    initForm();
     
     // スムーススクロール
     initSmoothScroll();
@@ -20,17 +14,33 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /* ==========================================
+   詳細表示トグル
+   ========================================== */
+function toggleDetails(button) {
+    const card = button.closest('.hp-card');
+    const requirements = card.querySelector('.card-requirements');
+    
+    if (requirements.classList.contains('show')) {
+        requirements.classList.remove('show');
+        button.textContent = '詳細を見る';
+    } else {
+        requirements.classList.add('show');
+        button.textContent = '閉じる';
+    }
+}
+
+/* ==========================================
    フィルター機能
    ========================================== */
 function initFilters() {
     const filterButtons = document.querySelectorAll('.filter-btn');
-    const talentCards = document.querySelectorAll('.talent-card');
+    const hpCards = document.querySelectorAll('.hp-card');
     
     // 現在のフィルター状態
     const activeFilters = {
-        star: 'all',
-        univ: 'all',
-        major: 'all'
+        role: 'all',
+        level: 'all',
+        contact: 'all'
     };
     
     filterButtons.forEach(button => {
@@ -49,23 +59,26 @@ function initFilters() {
             activeFilters[filterType] = filterValue;
             
             // カードをフィルタリング
-            filterCards(talentCards, activeFilters);
+            filterCards(hpCards, activeFilters);
         });
     });
 }
 
 function filterCards(cards, filters) {
+    let visibleCount = 0;
+    
     cards.forEach(card => {
-        const cardStar = card.dataset.star;
-        const cardUniv = card.dataset.univ;
-        const cardMajor = card.dataset.major;
+        const cardRole = card.dataset.role;
+        const cardLevel = card.dataset.level;
+        const cardContact = card.dataset.contact;
         
-        const matchStar = filters.star === 'all' || filters.star === cardStar;
-        const matchUniv = filters.univ === 'all' || filters.univ === cardUniv;
-        const matchMajor = filters.major === 'all' || filters.major === cardMajor;
+        const matchRole = filters.role === 'all' || filters.role === cardRole;
+        const matchLevel = filters.level === 'all' || filters.level === cardLevel;
+        const matchContact = filters.contact === 'all' || filters.contact === cardContact;
         
-        if (matchStar && matchUniv && matchMajor) {
+        if (matchRole && matchLevel && matchContact) {
             card.classList.remove('hidden');
+            visibleCount++;
             // アニメーション付きで表示
             card.style.opacity = '0';
             card.style.transform = 'translateY(20px)';
@@ -79,65 +92,21 @@ function filterCards(cards, filters) {
         }
     });
     
-    // フィルター結果が0件の場合のメッセージ（必要に応じて追加）
-    const visibleCards = document.querySelectorAll('.talent-card:not(.hidden)');
-    if (visibleCards.length === 0) {
-        console.log('該当する人材がいません');
-    }
-}
-
-/* ==========================================
-   FAQアコーディオン
-   ========================================== */
-function initFAQ() {
-    const faqItems = document.querySelectorAll('.faq-item');
-    
-    faqItems.forEach(item => {
-        const question = item.querySelector('.faq-question');
-        
-        question.addEventListener('click', function() {
-            // 他のFAQを閉じる
-            faqItems.forEach(otherItem => {
-                if (otherItem !== item) {
-                    otherItem.classList.remove('active');
-                }
-            });
-            
-            // クリックしたFAQを開閉
-            item.classList.toggle('active');
-        });
-    });
-}
-
-/* ==========================================
-   フォーム送信
-   ========================================== */
-function initForm() {
-    const form = document.getElementById('contactForm');
-    
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // フォームデータを取得
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData);
-            
-            // バリデーション
-            if (!data.company || !data.name || !data.email) {
-                alert('必須項目を入力してください');
-                return;
-            }
-            
-            // 送信処理（実際の実装では、ここでAPIに送信）
-            console.log('送信データ:', data);
-            
-            // 送信完了メッセージ
-            alert('お問い合わせありがとうございます。\n担当者より2営業日以内にご連絡いたします。');
-            
-            // フォームをリセット
-            form.reset();
-        });
+    // フィルター結果が0件の場合のメッセージ
+    const noResultsMsg = document.querySelector('.no-results');
+    if (visibleCount === 0) {
+        if (!noResultsMsg) {
+            const grid = document.querySelector('.hp-grid');
+            const msg = document.createElement('div');
+            msg.className = 'no-results';
+            msg.innerHTML = '<p>条件に合うハイパフォーマーが見つかりません。フィルターを変更してください。</p>';
+            msg.style.cssText = 'text-align: center; padding: 40px; color: #a0a0a0; grid-column: 1 / -1;';
+            grid.appendChild(msg);
+        }
+    } else {
+        if (noResultsMsg) {
+            noResultsMsg.remove();
+        }
     }
 }
 
@@ -175,7 +144,6 @@ function initSmoothScroll() {
    スクロールアニメーション
    ========================================== */
 function initScrollAnimations() {
-    // Intersection Observerを使用したスクロールアニメーション
     const observerOptions = {
         root: null,
         rootMargin: '0px',
@@ -191,15 +159,14 @@ function initScrollAnimations() {
         });
     }, observerOptions);
     
-    // アニメーション対象の要素
     const animateElements = document.querySelectorAll(
-        '.star-card, .talent-card, .testimonial-card, .comparison-table, .faq-item'
+        '.step-card, .level-card, .hp-card'
     );
     
-    animateElements.forEach(el => {
+    animateElements.forEach((el, index) => {
         el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = `opacity 0.5s ease ${index * 0.05}s, transform 0.5s ease ${index * 0.05}s`;
         observer.observe(el);
     });
 }
@@ -220,20 +187,9 @@ document.head.insertAdjacentHTML('beforeend', `
 window.addEventListener('scroll', function() {
     const navbar = document.querySelector('.navbar');
     
-    if (window.scrollY > 100) {
-        navbar.style.background = 'rgba(10, 10, 15, 0.95)';
+    if (window.scrollY > 50) {
+        navbar.style.background = 'rgba(10, 10, 15, 0.98)';
     } else {
-        navbar.style.background = 'rgba(10, 10, 15, 0.9)';
+        navbar.style.background = 'rgba(10, 10, 15, 0.95)';
     }
 });
-
-/* ==========================================
-   詳細ボタンのクリック処理
-   ========================================== */
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('detail-btn')) {
-        // 実際の実装では、モーダルを開くか詳細ページに遷移
-        alert('詳細情報は無料相談時にご確認いただけます。\n下部のフォームよりお問い合わせください。');
-    }
-});
-
