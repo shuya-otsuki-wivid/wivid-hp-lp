@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV一括インポート | Wivid Admin</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        .import-container {
+            max-width: 1000px;
+            margin: 100px auto 40px;
+            padding: 40px;
+        }
+        
+        .import-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .import-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--color-accent);
+            margin-bottom: 16px;
+        }
+        
+        .upload-area {
+            background: var(--color-bg-card);
+            border: 3px dashed var(--color-border);
+            border-radius: 12px;
+            padding: 60px;
+            text-align: center;
+            margin-bottom: 40px;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area.dragover {
+            border-color: var(--color-accent);
+            background: var(--color-primary-light);
+        }
+        
+        .upload-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        
+        .upload-text {
+            color: var(--color-text);
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .btn-upload {
+            background: var(--color-accent);
+            color: var(--color-primary);
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-upload:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 241, 0, 0.3);
+        }
+        
+        .preview-area {
+            display: none;
+            margin-bottom: 40px;
+        }
+        
+        .preview-area.show {
+            display: block;
+        }
+        
+        .preview-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-accent);
+            margin-bottom: 20px;
+        }
+        
+        .preview-table {
+            width: 100%;
+            background: var(--color-bg-card);
+            border-radius: 12px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+        
+        .preview-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .preview-table th {
+            background: var(--color-primary);
+            color: var(--color-accent);
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        
+        .preview-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--color-border);
+            color: var(--color-text);
+            font-size: 13px;
+        }
+        
+        .import-summary {
+            background: var(--color-primary-light);
+            border: 2px solid var(--color-accent);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .summary-text {
+            color: var(--color-text);
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .btn-import {
+            background: var(--color-pink);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-import:hover {
+            background: #c2006a;
+            transform: translateY(-2px);
+        }
+        
+        .btn-import:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .progress-bar {
+            display: none;
+            width: 100%;
+            height: 40px;
+            background: var(--color-bg-card);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        
+        .progress-bar.show {
+            display: block;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-accent), var(--color-pink));
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-primary);
+            font-weight: 700;
+        }
+        
+        .info-box {
+            background: var(--color-bg-card);
+            border-left: 4px solid var(--color-blue);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .info-box h3 {
+            color: var(--color-accent);
+            margin-bottom: 12px;
+        }
+        
+        .info-box ul {
+            color: var(--color-text);
+            line-height: 1.8;
+        }
+    </style>
+    
+    <!-- Firebase認証チェック -->
+    <script type="module">
+        import { checkAuthState } from './auth.js';
+        
+        checkAuthState((authState) => {
+            if (!authState.authenticated) {
+                window.location.href = 'login.html';
+            } else {
+                document.body.style.display = 'block';
+            }
+        });
+    </script>
+    
+    <style>
+        body { display: none; }
+    </style>
+</head>
+<body>
+    <!-- ナビゲーション -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-text">Wivid</span>
+                <span class="logo-badge">HP</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">HP一覧</a></li>
+                <li><a href="admin.html">管理画面</a></li>
+                <li><a href="import.html" style="color: #FFF100;">CSV一括インポート</a></li>
+                <li><a href="login-history.html">ログイン履歴</a></li>
+                <li><a href="#" id="signOutBtn">ログアウト</a></li>
+            </ul>
+            <span class="nav-label" id="userEmail">CSV一括インポート</span>
+        </div>
+    </nav>
+
+    <div class="import-container">
+        <div class="import-header">
+            <h1 class="import-title">ハイパフォーマーCSV一括インポート</h1>
+            <p style="color: var(--color-text-muted);">CSVファイルをアップロードして、複数のハイパフォーマー情報を一括登録できます。</p>
+        </div>
+        
+        <div class="info-box">
+            <h3>📋 CSVフォーマット</h3>
+            <ul>
+                <li><strong>テンプレート</strong>: <a href="template.csv" download style="color: var(--color-accent);">template.csv</a> をダウンロード</li>
+                <li><strong>文字コード</strong>: UTF-8</li>
+                <li><strong>必須項目</strong>: 企業名、HP氏名1、役職レベル、紹介レベル、接触形式、担当セールス</li>
+                <li><strong>公開ステータス</strong>: TRUE（公開）/ FALSE（非公開）</li>
+            </ul>
+        </div>
+        
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">📁</div>
+            <p class="upload-text">CSVファイルをドラッグ＆ドロップ<br>または</p>
+            <button class="btn-upload" onclick="document.getElementById('fileInput').click()">
+                ファイルを選択
+            </button>
+            <input type="file" id="fileInput" class="file-input" accept=".csv" onchange="handleFileSelect(event)">
+        </div>
+        
+        <div class="preview-area" id="previewArea">
+            <h2 class="preview-title">プレビュー</h2>
+            
+            <div class="import-summary">
+                <p class="summary-text">📊 <strong id="totalRecords">0</strong> 件のデータが見つかりました</p>
+                <p class="summary-text">✅ インポートすると Firestore に登録されます</p>
+            </div>
+            
+            <div class="preview-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>企業名</th>
+                            <th>HP氏名</th>
+                            <th>役職レベル</th>
+                            <th>紹介レベル</th>
+                            <th>接触形式</th>
+                            <th>担当セールス</th>
+                            <th>公開</th>
+                        </tr>
+                    </thead>
+                    <tbody id="previewTableBody">
+                    </tbody>
+                </table>
+            </div>
+            
+            <button class="btn-import" id="importBtn" onclick="importData()">
+                Firestoreにインポート
+            </button>
+            
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill">0%</div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="import.js"></script>
+    
+    <!-- ログアウト機能 -->
+    <script type="module">
+        import { signOutUser, getCurrentUser } from './auth.js';
+        
+        const user = getCurrentUser();
+        if (user) {
+            document.getElementById('userEmail').textContent = user.email;
+        }
+        
+        document.getElementById('signOutBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            if (confirm('ログアウトしますか？')) {
+                await signOutUser();
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+</html>
+
