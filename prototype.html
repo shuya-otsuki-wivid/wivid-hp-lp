@@ -16,8 +16,10 @@
                 <span class="logo-badge">HP V2</span>
             </a>
             <ul class="nav-links">
-                <li><a href="prototype.html" style="color: #FFF100;">プロトタイプ</a></li>
-                <li><a href="index.html">旧版に戻る</a></li>
+                <li><a href="#highperformers">ハイパフォーマー一覧</a></li>
+                <li><a href="#how-to-use">活用方法</a></li>
+                <li><a href="#conditions">紹介条件</a></li>
+                <li><a href="index.html" style="color: #FFF100;">旧版に戻る</a></li>
             </ul>
             <!-- 表示モード切り替えトグル -->
             <div class="view-mode-toggle">
@@ -30,7 +32,7 @@
                     <span class="toggle-label">就活生向けモード</span>
                 </button>
             </div>
-            <span class="nav-label">新デザインプロトタイプ</span>
+            <span class="nav-label">Prototype V2 - 個人単位表示デザイン</span>
         </div>
     </nav>
 
@@ -38,15 +40,113 @@
     <section class="hero hero-compact">
         <div class="hero-bg"></div>
         <div class="hero-content">
-            <p class="hero-label">Prototype V2 - Individual HP Cards</p>
+            <p class="hero-label">For Career Designers - Prototype V2</p>
             <h1 class="hero-title">
-                ハイパフォーマー<br>
-                <span class="highlight">個人単位</span>で紹介
+                ハイパフォーマーを<br>
+                <span class="highlight">ユーザーに紹介</span>しよう
             </h1>
             <p class="hero-subtitle">
-                新しいデザイン・新しいデータ構造のプロトタイプです。<br>
-                個人単位のカード表示で、より詳細な情報を提供します。
+                経営層・人事責任者との面談機会を提供。<br>
+                ユーザーの志向性や選考状況に合わせて、最適なハイパフォーマーを紹介してください。
             </p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number" id="totalHPCount">1</span>
+                    <span class="stat-label">名のハイパフォーマー</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">CEO/COO</span>
+                    <span class="stat-label">経営層との接点</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">面談/座談会</span>
+                    <span class="stat-label">多様な接触形式</span>
+                </div>
+            </div>
+            <div class="hero-cta">
+                <a href="#highperformers" class="btn btn-primary">ハイパフォーマーを見る</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 活用方法セクション -->
+    <section id="how-to-use" class="how-to-use-section">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-label">How to Use</p>
+                <h2 class="section-title">Career Designerとしての活用方法</h2>
+            </div>
+            
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>ユーザーの状況を確認</h3>
+                    <p>学歴、ガクチカ、選考状況、志向性を把握。紹介可能条件に合致するか確認してください。</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>最適なハイパフォーマーを選定</h3>
+                    <p>ユーザーの志向性に合うハイパフォーマーを選定。得られる知見や示唆を伝えましょう。</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>担当セールスに連絡</h3>
+                    <p>紹介したいHPの担当セールスに連絡し、面談調整を依頼してください。</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3>ユーザーに紹介</h3>
+                    <p>「どんな人と会えるか」「何が得られるか」を明確に伝えて、面談をセットしましょう。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 紹介条件セクション -->
+    <section id="conditions" class="conditions-section">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-label">Requirements</p>
+                <h2 class="section-title">紹介可能な学生レベル目安</h2>
+            </div>
+            
+            <div class="level-grid">
+                <div class="level-card">
+                    <div class="level-badge level-b">B</div>
+                    <h3>ハイレベル</h3>
+                    <ul>
+                        <li>旧帝大・早慶・GMARCHが望ましい</li>
+                        <li>特定の経験・スキル不問の場合あり</li>
+                    </ul>
+                </div>
+                <div class="level-card">
+                    <div class="level-badge level-b-minus">B−</div>
+                    <h3>アッパー</h3>
+                    <ul>
+                        <li>旧帝大、一橋、東工大（早慶含まない場合あり）</li>
+                        <li>起業経験あり、PL/BSが読める</li>
+                        <li>長期インターンレベルではNG</li>
+                    </ul>
+                </div>
+                <div class="level-card">
+                    <div class="level-badge level-c-plus">C+</div>
+                    <h3>スタンダード+</h3>
+                    <ul>
+                        <li>旧帝大早慶、海外大学</li>
+                        <li>つくば、神戸、横国、一橋あたりもOK</li>
+                        <li>外コン・外銀を受けている層</li>
+                        <li>体育会系の部活動経験/主将・代表経験など</li>
+                    </ul>
+                </div>
+                <div class="level-card">
+                    <div class="level-badge level-c">C</div>
+                    <h3>スタンダード</h3>
+                    <ul>
+                        <li>学群2以上</li>
+                        <li>特定の経験不問の場合が多い</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -54,10 +154,11 @@
     <section id="highperformers" class="hp-section">
         <div class="container">
             <div class="section-header">
-                <p class="section-label">Prototype</p>
-                <h2 class="section-title">新デザインプロトタイプ</h2>
+                <p class="section-label">High Performers - Prototype V2</p>
+                <h2 class="section-title">ハイパフォーマー一覧（個人単位表示）</h2>
                 <p class="section-desc">
-                    個人単位のカード表示イメージです。デザインを確認してください。
+                    フィルターを使って、ユーザーに最適なハイパフォーマーを探してください。<br>
+                    <strong style="color: #FFF100;">※ これは新デザインのプロトタイプです。デザイン・機能の確認用です。</strong>
                 </p>
             </div>
 
@@ -74,25 +175,33 @@
             <!-- フィルター -->
             <div class="filter-bar">
                 <div class="filter-group">
-                    <label>会社名</label>
-                    <div class="filter-buttons" data-filter="company">
+                    <label>役職レベル</label>
+                    <div class="filter-buttons" data-filter="role">
                         <button class="filter-btn active" data-value="all">すべて</button>
-                        <button class="filter-btn" data-value="EZO CONSULTING GROUP">EZO CONSULTING</button>
+                        <button class="filter-btn" data-value="executive">経営層</button>
+                        <button class="filter-btn" data-value="hr">人事責任者</button>
+                        <button class="filter-btn" data-value="business">事業責任者</button>
+                        <button class="filter-btn" data-value="manager">マネージャー</button>
+                        <button class="filter-btn" data-value="leader">リーダー</button>
+                        <button class="filter-btn" data-value="award">特別表彰受賞者</button>
                     </div>
                 </div>
                 <div class="filter-group">
-                    <label>役職</label>
-                    <div class="filter-buttons" data-filter="position">
+                    <label>紹介レベル</label>
+                    <div class="filter-buttons" data-filter="level">
                         <button class="filter-btn active" data-value="all">すべて</button>
-                        <button class="filter-btn" data-value="CEO">CEO</button>
-                        <button class="filter-btn" data-value="COO">COO</button>
+                        <button class="filter-btn" data-value="B">B</button>
+                        <button class="filter-btn" data-value="B-">B−</button>
+                        <button class="filter-btn" data-value="C+">C+</button>
+                        <button class="filter-btn" data-value="C">C</button>
                     </div>
                 </div>
                 <div class="filter-group">
-                    <label>年齢層</label>
-                    <div class="filter-buttons" data-filter="age">
+                    <label>接触形式</label>
+                    <div class="filter-buttons" data-filter="contact">
                         <button class="filter-btn active" data-value="all">すべて</button>
-                        <button class="filter-btn" data-value="30代">30代</button>
+                        <button class="filter-btn" data-value="individual">個別面談</button>
+                        <button class="filter-btn" data-value="group">座談会/イベント</button>
                     </div>
                 </div>
             </div>
@@ -101,7 +210,13 @@
             <div class="hp-grid">
                 
                 <!-- 田中雄土さん - プロトタイプ -->
-                <div class="hp-card-v2">
+                <div class="hp-card-v2" 
+                     data-role="executive" 
+                     data-level="C+" 
+                     data-contact="individual"
+                     data-company="EZO CONSULTING GROUP"
+                     data-position="代表取締役 CEO"
+                     data-age="30代">
                     <div class="card-header-v2">
                         <div class="hp-name-large">田中雄土さん</div>
                         <div class="company-info-row">EZO CONSULTING GROUP</div>
@@ -409,11 +524,39 @@
                         <span class="logo-text">Wivid</span>
                         <span class="logo-badge">HP V2</span>
                     </a>
-                    <p>新デザインプロトタイプ<br>個人単位のハイパフォーマー紹介</p>
+                    <p>Career Designer向けハイパフォーマー紹介ツール<br>ユーザーの成長をサポートしましょう<br><strong style="color: #FFF100;">※ Prototype V2 - 個人単位表示デザイン確認用</strong></p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>担当セールス</h4>
+                        <ul>
+                            <li>山本</li>
+                            <li>堀内</li>
+                            <li>勝守</li>
+                            <li>佐々木</li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>クイックリンク</h4>
+                        <ul>
+                            <li><a href="#highperformers">HP一覧</a></li>
+                            <li><a href="#how-to-use">活用方法</a></li>
+                            <li><a href="#conditions">紹介レベル</a></li>
+                            <li><a href="index.html">旧版に戻る</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>管理機能</h4>
+                        <ul>
+                            <li><a href="admin.html">管理画面</a></li>
+                            <li><a href="import.html">CSV一括インポート</a></li>
+                            <li><a href="login-history.html">ログイン履歴</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Wivid Inc. Prototype V2</p>
+                <p>&copy; 2025 Wivid Inc. All rights reserved. | For Career Designers Only</p>
             </div>
         </div>
     </footer>
@@ -646,20 +789,78 @@
     </style>
 
     <script>
-        // シンプルな検索機能（デモ）
+        // フィルター機能
+        const filters = {
+            role: 'all',
+            level: 'all',
+            contact: 'all'
+        };
+
+        // フィルターボタンの初期化
+        document.querySelectorAll('.filter-buttons').forEach(group => {
+            const filterType = group.dataset.filter;
+            group.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 同じグループ内のボタンのactiveを解除
+                    group.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    // クリックされたボタンをactiveに
+                    this.classList.add('active');
+                    
+                    // フィルター値を更新
+                    filters[filterType] = this.dataset.value;
+                    
+                    // フィルターを適用
+                    applyFilters();
+                });
+            });
+        });
+
+        // フィルターを適用
+        function applyFilters() {
+            const cards = document.querySelectorAll('.hp-card-v2');
+            let visibleCount = 0;
+            
+            cards.forEach(card => {
+                const roleMatch = filters.role === 'all' || card.dataset.role === filters.role;
+                const levelMatch = filters.level === 'all' || card.dataset.level === filters.level;
+                const contactMatch = filters.contact === 'all' || card.dataset.contact === filters.contact;
+                
+                if (roleMatch && levelMatch && contactMatch) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            console.log(`✅ フィルター適用: ${visibleCount}件表示`);
+        }
+
+        // 検索機能
         document.getElementById('searchInput').addEventListener('input', function(e) {
             const searchTerm = e.target.value.toLowerCase();
             const cards = document.querySelectorAll('.hp-card-v2');
             
             cards.forEach(card => {
                 const text = card.textContent.toLowerCase();
-                if (text.includes(searchTerm)) {
+                const matchesSearch = text.includes(searchTerm);
+                const matchesFilters = checkFilters(card);
+                
+                if (matchesSearch && matchesFilters) {
                     card.style.display = 'block';
                 } else {
                     card.style.display = 'none';
                 }
             });
         });
+
+        // フィルター条件をチェック
+        function checkFilters(card) {
+            const roleMatch = filters.role === 'all' || card.dataset.role === filters.role;
+            const levelMatch = filters.level === 'all' || card.dataset.level === filters.level;
+            const contactMatch = filters.contact === 'all' || card.dataset.contact === filters.contact;
+            return roleMatch && levelMatch && contactMatch;
+        }
 
         // モーダル開閉
         function openInsightsModal() {
