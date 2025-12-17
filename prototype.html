@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>プロトタイプ | Wivid HP Tool V2</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- ナビゲーション -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-text">Wivid</span>
+                <span class="logo-badge">HP V2</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="prototype.html" style="color: #FFF100;">プロトタイプ</a></li>
+                <li><a href="index.html">旧版に戻る</a></li>
+            </ul>
+            <span class="nav-label">新デザインプロトタイプ</span>
+        </div>
+    </nav>
+
+    <!-- ヒーローセクション -->
+    <section class="hero hero-compact">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <p class="hero-label">Prototype V2 - Individual HP Cards</p>
+            <h1 class="hero-title">
+                ハイパフォーマー<br>
+                <span class="highlight">個人単位</span>で紹介
+            </h1>
+            <p class="hero-subtitle">
+                新しいデザイン・新しいデータ構造のプロトタイプです。<br>
+                個人単位のカード表示で、より詳細な情報を提供します。
+            </p>
+        </div>
+    </section>
+
+    <!-- ハイパフォーマー一覧セクション -->
+    <section id="highperformers" class="hp-section">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-label">Prototype</p>
+                <h2 class="section-title">新デザインプロトタイプ</h2>
+                <p class="section-desc">
+                    個人単位のカード表示イメージです。デザインを確認してください。
+                </p>
+            </div>
+
+            <!-- 検索バー（V2） -->
+            <div class="search-bar-v2">
+                <input 
+                    type="text" 
+                    class="search-input-v2" 
+                    placeholder="ハイパフォーマー名、会社名、キーワードで検索..."
+                    id="searchInput"
+                >
+            </div>
+
+            <!-- フィルター -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label>会社名</label>
+                    <div class="filter-buttons" data-filter="company">
+                        <button class="filter-btn active" data-value="all">すべて</button>
+                        <button class="filter-btn" data-value="EZO CONSULTING GROUP">EZO CONSULTING</button>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label>役職</label>
+                    <div class="filter-buttons" data-filter="position">
+                        <button class="filter-btn active" data-value="all">すべて</button>
+                        <button class="filter-btn" data-value="CEO">CEO</button>
+                        <button class="filter-btn" data-value="COO">COO</button>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label>年齢層</label>
+                    <div class="filter-buttons" data-filter="age">
+                        <button class="filter-btn active" data-value="all">すべて</button>
+                        <button class="filter-btn" data-value="30代">30代</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ハイパフォーマーカードグリッド（V2） -->
+            <div class="hp-grid">
+                
+                <!-- 田中雄土さん - プロトタイプ -->
+                <div class="hp-card-v2">
+                    <div class="card-header-v2">
+                        <div class="hp-name-large">田中雄土さん</div>
+                        <div class="company-info-row">EZO CONSULTING GROUP</div>
+                        <div class="position-info-row">
+                            <span class="position-badge-v2">💼 代表取締役 CEO</span>
+                            <span class="age-badge">👤 30代後半</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body-v2">
+                        <!-- 経歴 -->
+                        <div class="section-v2">
+                            <div class="section-title-v2">
+                                📚 経歴
+                            </div>
+                            <div class="section-content-v2">
+                                <ul class="background-list">
+                                    <li>早稲田大学卒業</li>
+                                    <li>プロアルペンスキーヤーとして活動</li>
+                                    <li>第89回全日本スキー選手権 回転競技 第3位</li>
+                                    <li>引退後、大手不動産会社に入社</li>
+                                    <li>一棟ビル・マンションの売買、資産運用・コンサルティング業務に従事</li>
+                                    <li>独立し、EZO CONSULTINGを設立</li>
+                                    <li>瞬時に価値ある不動産を見抜く目利き力を武器に、多くの投資家の資産形成をサポート</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 紹介先 -->
+                        <div class="section-v2">
+                            <div class="section-title-v2">
+                                🎯 紹介先
+                            </div>
+                            <div class="section-content-v2">
+                                <span class="intro-destination-badge">初回面談</span>
+                            </div>
+                        </div>
+
+                        <!-- 紹介条件：評価・選考フェーズ -->
+                        <div class="section-v2">
+                            <div class="section-title-v2">
+                                ✅ 紹介条件：評価・選考フェーズ
+                            </div>
+                            <div class="section-content-v2">
+                                <div class="intro-conditions-box">
+                                    セールス担当による案内可否判断が通れば紹介可能
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 紹介条件：対象学生 -->
+                        <div class="section-v2">
+                            <div class="section-title-v2">
+                                👨‍🎓 紹介条件：対象学生
+                            </div>
+                            <div class="section-content-v2">
+                                <div class="intro-conditions-box">
+                                    <strong>学歴：</strong>旧帝大早慶、海外大学、つくば・神戸・横国・一橋あたりもOK<br>
+                                    <strong>レベル感：</strong>C+<br>
+                                    <strong>志向性・タイプ：</strong>とにかくよく食べる子、体力がある、ストレス耐性がある<br>
+                                    <strong>バッティング企業：</strong>外コン・外銀を受けている（惜しいところで落ちた層もOK）<br>
+                                    <strong>学生時代の活動例：</strong>体育会系の部活動経験/主将・代表経験など
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 紹介オペレーション -->
+                        <div class="section-v2">
+                            <div class="section-title-v2">
+                                📋 紹介オペレーション
+                            </div>
+                            <div class="section-content-v2">
+                                システムでガクチカ・就活軸・将来像・他社選考状況を記載して案件報告する
+                            </div>
+                        </div>
+
+                        <!-- 得られる知見（プレビュー） -->
+                        <div class="section-v2">
+                            <div class="section-title-v2">
+                                💡 得られる知見（プレビュー）
+                            </div>
+                            <div class="section-content-v2 insights-preview">
+                                <ul>
+                                    <li>キャリアの「掛け算」の威力（トップアスリート × ビジネス）</li>
+                                    <li>「転身」の再現性を確認できる</li>
+                                    <li>起業家としての「到達点」を理解できる</li>
+                                    <li>トップアスリートのマインドセットのビジネス応用</li>
+                                    <li>不動産コンサルという業界・職種のリアル</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- タグ -->
+                        <div class="tags-row">
+                            <span class="tag-badge">🏷️ 起業家</span>
+                            <span class="tag-badge">🏷️ 不動産</span>
+                            <span class="tag-badge">🏷️ 元アスリート</span>
+                            <span class="tag-badge">🏷️ 早稲田</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card-footer-v2">
+                        <button class="detail-btn-v2" onclick="alert('詳細表示機能は実装予定です')">
+                            詳細を見る（得られる知見の全文など）
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- フィードバック -->
+            <div style="margin-top: 60px; padding: 40px; background: var(--color-bg-card); border-radius: 12px; border: 2px solid var(--color-accent);">
+                <h3 style="color: var(--color-accent); margin-bottom: 20px; text-align: center;">📝 プロトタイプフィードバック</h3>
+                <div style="color: var(--color-text); line-height: 1.8;">
+                    <p style="margin-bottom: 16px;"><strong>✅ 確認ポイント：</strong></p>
+                    <ul style="padding-left: 20px;">
+                        <li>個人単位のカード表示は見やすいですか？</li>
+                        <li>情報の配置・量は適切ですか？</li>
+                        <li>「得られる知見」の表示方法は分かりやすいですか？</li>
+                        <li>検索バー・フィルターの配置は使いやすそうですか？</li>
+                        <li>修正したい点はありますか？</li>
+                    </ul>
+                    <p style="margin-top: 20px; color: var(--color-accent);">
+                        <strong>👉 このデザインでOKなら、全データをこの形式に移行します！</strong>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <span class="logo-text">Wivid</span>
+                        <span class="logo-badge">HP V2</span>
+                    </a>
+                    <p>新デザインプロトタイプ<br>個人単位のハイパフォーマー紹介</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Wivid Inc. Prototype V2</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // シンプルな検索機能（デモ）
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.hp-card-v2');
+            
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
