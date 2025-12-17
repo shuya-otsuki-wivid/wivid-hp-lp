@@ -193,13 +193,180 @@
                     </div>
                     
                     <div class="card-footer-v2">
-                        <button class="detail-btn-v2" onclick="alert('詳細表示機能は実装予定です')">
+                        <button class="detail-btn-v2" onclick="openInsightsModal()">
                             詳細を見る（得られる知見の全文など）
                         </button>
                     </div>
                 </div>
 
             </div>
+
+            <!-- 得られる知見モーダル -->
+            <div id="insightsModal" class="modal-overlay" onclick="closeInsightsModal()">
+                <div class="modal-content-large" onclick="event.stopPropagation()">
+                    <div class="modal-header-large">
+                        <h2>💡 田中雄土さんと話すことで得られる知見</h2>
+                        <button class="modal-close-btn" onclick="closeInsightsModal()">&times;</button>
+                    </div>
+                    
+                    <div class="modal-body-large">
+                        <div class="insights-section">
+                            <h3 class="insights-title">1. 「業務」と「キャリア」の解像度が劇的に上がる</h3>
+                            
+                            <div class="insights-subsection">
+                                <h4>① キャリアの「掛け算」の威力を理解できる</h4>
+                                <p><strong>得られる知見：</strong></p>
+                                <ul>
+                                    <li><strong>一見無関係な経験が、後に最強の武器になる</strong>ことを実感できる</li>
+                                    <li>プロスキーヤーとしての「瞬時の判断力」「リスク管理能力」「勝負勘」が、不動産の目利き力に転用されている</li>
+                                    <li>「トップアスリート × ビジネス」という掛け算が、他者との圧倒的な差別化を生んでいる</li>
+                                </ul>
+                                <p><strong>具体的な質問例：</strong></p>
+                                <ul>
+                                    <li>「スキーで培った能力が、不動産ビジネスのどこに活きていますか？」</li>
+                                    <li>「全日本3位という実績が、起業時にどう作用しましたか？」</li>
+                                </ul>
+                            </div>
+
+                            <div class="insights-subsection">
+                                <h4>② 「転身」の再現性を確認できる</h4>
+                                <p><strong>得られる知見：</strong></p>
+                                <ul>
+                                    <li><strong>異業種への転身は、正しい戦略があれば可能</strong>だと分かる</li>
+                                    <li>プロ引退→大手不動産入社のプロセス</li>
+                                    <li>実務経験を積んでから起業する戦略性</li>
+                                    <li>「専門性」を確立してから独立する重要性</li>
+                                </ul>
+                                <p><strong>具体的な質問例：</strong></p>
+                                <ul>
+                                    <li>「なぜ引退後、不動産を選んだのですか？」</li>
+                                    <li>「大手で何年経験してから独立しましたか？その判断基準は？」</li>
+                                </ul>
+                            </div>
+
+                            <div class="insights-subsection">
+                                <h4>③ 起業家としての「到達点」を理解できる</h4>
+                                <p><strong>得られる知見：</strong></p>
+                                <ul>
+                                    <li><strong>30代後半でCEOになるまでの具体的なステップ</strong>が分かる</li>
+                                    <li>大手での実務経験期間</li>
+                                    <li>独立に必要だったスキル・人脈・資金</li>
+                                    <li>起業初期の困難と乗り越え方</li>
+                                    <li>現在の事業規模と今後のビジョン</li>
+                                </ul>
+                                <p><strong>具体的な質問例：</strong></p>
+                                <ul>
+                                    <li>「起業前に、どんな準備をしましたか？」</li>
+                                    <li>「最初のクライアントはどう獲得しましたか？」</li>
+                                    <li>「今の会社規模になるまで何年かかりましたか？」</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="insights-section">
+                            <h3 class="insights-title">2. 得られる「リターン」を具体的に理解できる</h3>
+                            
+                            <div class="insights-subsection">
+                                <h4>① 「好きなこと」を仕事にした先の姿を知れる</h4>
+                                <p><strong>得られる知見：</strong></p>
+                                <ul>
+                                    <li><strong>情熱を持てる分野で起業することの充実感</strong>を感じられる</li>
+                                    <li>スキーへの情熱→不動産への情熱への転換プロセス</li>
+                                    <li>30代後半で代表取締役として働く「喜び」の実態</li>
+                                    <li>投資家の資産形成をサポートすることで得られる「やりがい」</li>
+                                </ul>
+                                <p><strong>具体的な質問例：</strong></p>
+                                <ul>
+                                    <li>「スキーと同じくらい、今の仕事に情熱を持てていますか？」</li>
+                                    <li>「仕事で最も喜びを感じる瞬間はいつですか？」</li>
+                                </ul>
+                            </div>
+
+                            <div class="insights-subsection">
+                                <h4>② 起業家としての「報酬」のリアルを知れる</h4>
+                                <p><strong>得られる知見：</strong></p>
+                                <ul>
+                                    <li><strong>起業した場合の金銭的・時間的リターン</strong>の実態</li>
+                                    <li>起業初期の収入状況</li>
+                                    <li>軌道に乗った後の報酬レベル</li>
+                                    <li>労働時間と自由度のバランス</li>
+                                    <li>サラリーマン時代との比較</li>
+                                </ul>
+                                <p><strong>具体的な質問例：</strong></p>
+                                <ul>
+                                    <li>「起業前と後で、生活はどう変わりましたか？」</li>
+                                    <li>「大手時代と比べて、時間の自由度はどうですか？」</li>
+                                </ul>
+                            </div>
+
+                            <div class="insights-subsection">
+                                <h4>③ 「目利き力」という専門性の価値を理解できる</h4>
+                                <p><strong>得られる知見：</strong></p>
+                                <ul>
+                                    <li><strong>ニッチな専門性が、いかに強力な武器になるか</strong>を実感できる</li>
+                                    <li>「瞬時に価値ある不動産を見抜く目利き力」という差別化要素</li>
+                                    <li>その専門性を獲得するまでのプロセス</li>
+                                    <li>専門性が顧客からの信頼につながる構造</li>
+                                </ul>
+                                <p><strong>具体的な質問例：</strong></p>
+                                <ul>
+                                    <li>「目利き力は、どうやって身につけましたか？」</li>
+                                    <li>「その専門性が、どう顧客獲得につながっていますか？」</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="insights-section">
+                            <h3 class="insights-title">3. この方と話すことで特に得られる「固有の知見」</h3>
+                            
+                            <div class="insights-subsection">
+                                <h4>① 「トップアスリートのマインドセット」のビジネス応用</h4>
+                                <p><strong>得られる知見：</strong></p>
+                                <ul>
+                                    <li>全日本3位という極限まで自分を追い込んだ経験が、ビジネスでどう活きるか</li>
+                                    <li>勝負の世界で培った「メンタルの強さ」「リスクテイク力」「目標達成力」</li>
+                                    <li>スポーツで学んだ「PDCAサイクル」「データ分析」のビジネス転用</li>
+                                </ul>
+                            </div>
+
+                            <div class="insights-subsection">
+                                <h4>② 「早稲田→プロスポーツ→大手→起業」という多様なキャリアパス</h4>
+                                <p><strong>得られる知見：</strong></p>
+                                <ul>
+                                    <li>新卒でスポーツを選ぶという選択肢の可能性</li>
+                                    <li>セカンドキャリアの設計方法</li>
+                                    <li>学歴（早稲田）がどう作用したか</li>
+                                    <li>複数のキャリアを経験することの強み</li>
+                                </ul>
+                            </div>
+
+                            <div class="insights-subsection">
+                                <h4>③ 「不動産コンサル」という業界・職種のリアル</h4>
+                                <p><strong>得られる知見：</strong></p>
+                                <ul>
+                                    <li>不動産業界の魅力と厳しさ</li>
+                                    <li>コンサルティングという仕事の本質</li>
+                                    <li>富裕層・投資家を相手にする仕事のやりがい</li>
+                                    <li>一棟ビル・事業用地という大型案件の面白さ</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="insights-section" style="background: var(--color-primary-light); padding: 20px; border-radius: 8px; margin-top: 30px;">
+                            <h3 class="insights-title">🎯 このハイパフォーマーとの対話が特に有益な学生像</h3>
+                            <ul style="margin-top: 16px;">
+                                <li>✅ <strong>起業志向がある学生</strong> - 起業までの具体的なステップが理解できる</li>
+                                <li>✅ <strong>不動産・金融業界に興味がある学生</strong> - 業界のリアルと必要なスキルが分かる</li>
+                                <li>✅ <strong>体育会系の学生</strong> - スポーツ経験のビジネス活用方法が学べる</li>
+                                <li>✅ <strong>キャリアの掛け算に興味がある学生</strong> - 異色の経歴が強みになる実例を知れる</li>
+                                <li>✅ <strong>大手→起業を考えている学生</strong> - 最適な転身タイミングと準備方法が分かる</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
             <!-- フィードバック -->
             <div style="margin-top: 60px; padding: 40px; background: var(--color-bg-card); border-radius: 12px; border: 2px solid var(--color-accent);">
@@ -240,6 +407,149 @@
         </div>
     </footer>
 
+    <style>
+        /* モーダルスタイル */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            overflow-y: auto;
+            padding: 40px 20px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .modal-content-large {
+            background: var(--color-bg-card);
+            border-radius: var(--radius-md);
+            max-width: 900px;
+            width: 100%;
+            box-shadow: var(--shadow-lg);
+            border: 2px solid var(--color-accent);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header-large {
+            padding: 30px;
+            background: var(--color-primary);
+            border-bottom: 3px solid var(--color-accent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .modal-header-large h2 {
+            color: var(--color-accent);
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .modal-close-btn {
+            background: none;
+            border: none;
+            color: var(--color-text);
+            font-size: 36px;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close-btn:hover {
+            background: var(--color-primary-light);
+            color: var(--color-accent);
+        }
+
+        .modal-body-large {
+            padding: 40px;
+            color: var(--color-text);
+        }
+
+        .insights-section {
+            margin-bottom: 40px;
+        }
+
+        .insights-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .insights-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-accent);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .insights-subsection {
+            margin-bottom: 30px;
+            padding-left: 20px;
+            border-left: 3px solid var(--color-blue);
+        }
+
+        .insights-subsection:last-child {
+            margin-bottom: 0;
+        }
+
+        .insights-subsection h4 {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--color-blue);
+            margin-bottom: 16px;
+        }
+
+        .insights-subsection p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+
+        .insights-subsection ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 16px;
+        }
+
+        .insights-subsection ul li {
+            padding-left: 24px;
+            position: relative;
+            margin-bottom: 10px;
+            line-height: 1.7;
+        }
+
+        .insights-subsection ul li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--color-accent);
+            font-weight: 700;
+        }
+
+        .insights-subsection strong {
+            color: var(--color-accent);
+        }
+    </style>
+
     <script>
         // シンプルな検索機能（デモ）
         document.getElementById('searchInput').addEventListener('input', function(e) {
@@ -254,6 +564,24 @@
                     card.style.display = 'none';
                 }
             });
+        });
+
+        // モーダル開閉
+        function openInsightsModal() {
+            document.getElementById('insightsModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeInsightsModal() {
+            document.getElementById('insightsModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        // ESCキーでモーダルを閉じる
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeInsightsModal();
+            }
         });
     </script>
 </body>
