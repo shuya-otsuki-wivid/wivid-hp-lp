@@ -106,6 +106,16 @@ function createHPCard(data) {
     // 紹介レベルのクラス
     const levelClass = `level-${(data.introductionLevel || 'c').toLowerCase().replace('-', '-minus').replace('+', '-plus')}`;
     
+    // 接触形式のラベルを取得
+    function getContactTypeLabel(contactType) {
+        const labels = {
+            'individual': '📍 個別面談',
+            'interview': '🎤 面接',
+            'group': '👥 座談会/イベント'
+        };
+        return labels[contactType] || contactType || '—';
+    }
+    
     card.innerHTML = `
         <div class="card-header-v2">
             <div class="hp-name-large">${data.name || '氏名不明'}さん</div>
@@ -149,6 +159,15 @@ function createHPCard(data) {
             <div class="section-v2 cd-only">
                 <div class="section-title-v2">📋 紹介オペレーション</div>
                 <div class="section-content-v2">${data.introductionOperation}</div>
+            </div>
+            ` : ''}
+            
+            ${data.contactType || data.contactTypeDetail ? `
+            <div class="section-v2">
+                <div class="section-title-v2">📞 接触形式</div>
+                <div class="section-content-v2">
+                    ${getContactTypeLabel(data.contactType)}${data.contactTypeDetail ? `<br><small style="color: var(--color-text-muted);">${data.contactTypeDetail}</small>` : ''}
+                </div>
             </div>
             ` : ''}
             

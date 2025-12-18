@@ -134,6 +134,7 @@ async function loadHPData(id) {
             document.getElementById('introductionConditions').value = data.introductionConditions || '';
             document.getElementById('introductionOperation').value = data.introductionOperation || '';
             document.getElementById('contactType').value = data.contactType || '';
+            document.getElementById('contactTypeDetail').value = data.contactTypeDetail || '';
             document.getElementById('insightsBrief').value = data.insightsBrief || '';
             document.getElementById('insights').value = data.insights || '';
             document.getElementById('salesPerson').value = data.salesPerson || '';
@@ -167,6 +168,7 @@ document.getElementById('hpForm').addEventListener('submit', async (e) => {
         introductionConditions: document.getElementById('introductionConditions').value,
         introductionOperation: document.getElementById('introductionOperation').value,
         contactType: document.getElementById('contactType').value,
+        contactTypeDetail: document.getElementById('contactTypeDetail').value,
         insightsBrief: document.getElementById('insightsBrief').value,
         insights: document.getElementById('insights').value,
         salesPerson: document.getElementById('salesPerson').value,
