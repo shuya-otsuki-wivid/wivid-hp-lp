@@ -76,29 +76,24 @@ function handleFile(file) {
 }
 
 /* ==========================================
-   CSVパース
+   CSVパース（PapaParse使用）
    ========================================== */
 function parseCSV(text) {
-    const lines = text.split('\n');
-    const headers = lines[0].split(',').map(h => h.trim());
-    
-    parsedData = [];
-    
-    for (let i = 1; i < lines.length; i++) {
-        const line = lines[i].trim();
-        if (!line) continue;
-        
-        const values = line.split(',').map(v => v.trim());
-        
-        const row = {};
-        headers.forEach((header, index) => {
-            row[header] = values[index] || '';
-        });
-        
-        parsedData.push(row);
-    }
-    
-    displayPreview();
+    // PapaParseを使用してCSVを正しくパース
+    Papa.parse(text, {
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+            parsedData = results.data;
+            console.log('✅ CSVパース完了:', parsedData.length, '件');
+            console.log('最初のデータ:', parsedData[0]);
+            displayPreview();
+        },
+        error: function(error) {
+            console.error('❌ CSVパースエラー:', error);
+            alert('CSVの解析に失敗しました: ' + error.message);
+        }
+    });
 }
 
 /* ==========================================
@@ -115,20 +110,51 @@ function displayPreview() {
     parsedData.forEach((row, index) => {
         const tr = document.createElement('tr');
         
+        // 新形式（個人単位）対応
+        const company = row['company'] || row['企業名'] || '—';
+        const name = row['name'] || row['HP氏名1'] || '—';
+        const roleLevel = getRoleLevelLabel(row['roleLevel'] || row['役職レベル']);
+        const introLevel = row['introductionLevel'] || row['紹介レベル'] || '—';
+        const contactType = getContactTypeLabel(row['contactType'] || row['接触形式']);
+        const salesPerson = row['salesPerson'] || row['担当セールス'] || '—';
+        
         tr.innerHTML = `
-            <td>${row['企業名'] || '—'}</td>
-            <td>${row['HP氏名1'] || '—'}</td>
-            <td>${row['役職レベル'] || '—'}</td>
-            <td>${row['紹介レベル'] || '—'}</td>
-            <td>${row['接触形式'] || '—'}</td>
-            <td>${row['担当セールス'] || '—'}</td>
-            <td>${row['公開中'] === 'TRUE' ? '✅' : '❌'}</td>
+            <td>${company}</td>
+            <td>${name}</td>
+            <td>${roleLevel}</td>
+            <td>${introLevel}</td>
+            <td>${contactType}</td>
+            <td>${salesPerson}</td>
+            <td>✅</td>
         `;
         
         previewTableBody.appendChild(tr);
     });
     
     previewArea.classList.add('show');
+}
+
+// 役職レベルのラベル変換
+function getRoleLevelLabel(roleLevel) {
+    const labels = {
+        'executive': '経営層',
+        'hr': '人事責任者',
+        'business': '事業責任者',
+        'manager': 'マネージャー',
+        'leader': 'リーダー',
+        'award': '特別表彰受賞者'
+    };
+    return labels[roleLevel] || roleLevel || '—';
+}
+
+// 接触形式のラベル変換
+function getContactTypeLabel(contactType) {
+    const labels = {
+        'individual': '個別面談',
+        'interview': '面接',
+        'group': '座談会/イベント'
+    };
+    return labels[contactType] || contactType || '—';
 }
 
 /* ==========================================
@@ -162,36 +188,26 @@ window.importData = async function() {
         const row = parsedData[i];
         
         try {
+            // 新形式（個人単位）のデータ構造
             const data = {
-                company_name: row['企業名'] || '',
-                company_size: row['企業規模'] || '',
-                industry: row['業界'] || '',
-                hp_name_1: row['HP氏名1'] || '',
-                hp_role_1: row['HP役職1'] || '',
-                hp_name_2: row['HP氏名2'] || '',
-                hp_role_2: row['HP役職2'] || '',
-                position_level: row['役職レベル'] || '',
-                age_range: row['年齢層'] || '',
-                background: row['経歴'] || '',
-                achievements: row['成果・特徴'] || '',
-                introduction_level: row['紹介レベル'] || '',
-                education_requirement: row['学歴要件'] || '',
-                experience_requirement: row['経験要件'] || '',
-                selection_status: row['選考状況要件'] || '',
-                student_mindset: row['志向性要件'] || '',
-                additional_notes: row['補足条件'] || '',
-                contact_format: row['接触形式'] || '',
-                contact_format_detail: row['接触形式詳細'] || '',
-                first_contact_person: row['初回対応者'] || '',
-                special_contact_note: row['特記事項'] || '',
-                insights: row['得られる知見'] || '',
-                learning_points: row['学べるポイント（カンマ区切り）'] || '',
-                recommended_for: row['推奨学生タイプ'] || '',
-                sales_contact: row['担当セールス'] || '',
-                sales_email: row['セールスメール'] || '',
-                introduction_flow: row['紹介フロー'] || '',
-                lead_time: row['リードタイム'] || '',
-                is_active: row['公開中'] === 'TRUE',
+                name: row['name'] || row['HP氏名1'] || '',
+                company: row['company'] || row['企業名'] || '',
+                position: row['position'] || row['役職'] || '',
+                roleLevel: row['roleLevel'] || row['役職レベル'] || '',
+                age: row['age'] || row['年齢層'] || '',
+                background: row['background'] || row['経歴'] || '',
+                achievements: row['achievements'] || row['成果・特徴'] || '',
+                introductionDestination: row['introductionDestination'] || row['紹介先'] || '',
+                introductionLevel: row['introductionLevel'] || row['紹介レベル'] || '',
+                introductionConditions: row['introductionConditions'] || row['紹介可能条件'] || '',
+                introductionOperation: row['introductionOperation'] || row['紹介オペレーション'] || '',
+                contactType: row['contactType'] || row['接触形式'] || '',
+                contactTypeDetail: row['contactTypeDetail'] || row['接触形式の補足説明'] || '',
+                insightsBrief: row['insightsBrief'] || row['得られる知見（簡潔版）'] || '',
+                insights: row['insights'] || row['得られる知見'] || '',
+                salesPerson: row['salesPerson'] || row['担当セールス'] || '',
+                tags: row['tags'] || row['タグ'] || '',
+                is_active: true,
                 created_at: serverTimestamp(),
                 created_by: userEmail,
                 updated_at: serverTimestamp(),
