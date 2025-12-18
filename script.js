@@ -27,31 +27,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // スムーススクロール
     initSmoothScroll();
-    
-    // 詳細ボタンのイベントデリゲーション
-    document.addEventListener('click', function(e) {
-        if (e.target && e.target.classList.contains('show-insights-btn')) {
-            console.log('🖱️ 詳細ボタンがクリックされました');
-            e.preventDefault();
-            e.stopPropagation();
-            
-            // 親カードからデータを取得
-            const card = e.target.closest('.hp-card-v2');
-            if (card) {
-                const name = card.dataset.hpName;
-                const insights = card.dataset.hpInsights;
-                console.log('📊 取得したデータ:', { name, insightsLength: insights ? insights.length : 0 });
-                
-                if (insights) {
-                    showInsights(name, insights);
-                } else {
-                    console.warn('⚠️ insightsデータが見つかりません');
-                }
-            } else {
-                console.warn('⚠️ カード要素が見つかりません');
-            }
-        }
-    });
 });
 
 /* ==========================================
@@ -123,10 +98,6 @@ function createHPCard(data) {
     card.dataset.company = data.company || '';
     card.dataset.position = data.position || '';
     card.dataset.age = data.age || '';
-    
-    // 詳細モーダル用のデータを保存
-    card.dataset.hpName = data.name || '';
-    card.dataset.hpInsights = data.insights || '';
     
     // 経歴をリスト化
     const backgroundList = data.background ? data.background.split('｜').map(item => `<li>${item}</li>`).join('') : '';
@@ -213,11 +184,33 @@ function createHPCard(data) {
         
         <div class="card-footer-v2">
             <span class="sales-info">担当：${data.salesPerson || '—'}</span>
-            ${data.insights ? `<button class="detail-btn-v2 show-insights-btn">詳細を見る</button>` : ''}
+            ${data.insights ? `<button class="detail-btn-v2" onclick="window.openHPInsights('${escapeForAttribute(data.name)}', '${escapeForAttribute(data.insights)}')">詳細を見る</button>` : ''}
         </div>
     `;
     
     return card;
+}
+
+// HTML属性用のエスケープ関数
+function escapeForAttribute(str) {
+    if (!str) return '';
+    return str
+        .replace(/\\/g, '\\\\')
+        .replace(/'/g, "\\'")
+        .replace(/"/g, '&quot;')
+        .replace(/\n/g, '\\n')
+        .replace(/\r/g, '\\r');
+}
+
+// HTML属性のエスケープを元に戻す関数
+function unescapeAttribute(str) {
+    if (!str) return '';
+    return str
+        .replace(/\\r/g, '\r')
+        .replace(/\\n/g, '\n')
+        .replace(/&quot;/g, '"')
+        .replace(/\\'/g, "'")
+        .replace(/\\\\/g, '\\');
 }
 
 /* ==========================================
@@ -239,24 +232,12 @@ window.toggleDetails = function(button) {
 /* ==========================================
    得られる知見の詳細表示（新カード用）
    ========================================== */
-window.showInsights = function(name, insights) {
-    console.log('📢 showInsights called:', { name, insights });
+window.openHPInsights = function(name, insights) {
+    console.log('🔍 openHPInsights called:', { name, insightsLength: insights ? insights.length : 0 });
     
-    // データが既にエンコードされているかチェック
-    let displayName = name;
-    let displayInsights = insights;
-    
-    try {
-        // URLエンコードされている場合はデコード
-        if (name && name.includes('%')) {
-            displayName = decodeURIComponent(name);
-        }
-        if (insights && insights.includes('%')) {
-            displayInsights = decodeURIComponent(insights);
-        }
-    } catch (e) {
-        console.log('デコード不要:', e);
-    }
+    // エスケープを元に戻す
+    let displayName = unescapeAttribute(name);
+    let displayInsights = unescapeAttribute(insights);
     
     // モーダルが既に存在する場合は削除
     const existingModal = document.getElementById('insightsModal');
