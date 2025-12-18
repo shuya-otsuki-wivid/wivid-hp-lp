@@ -144,8 +144,8 @@ function createHPCard(data) {
             <div class="section-v2 cd-only">
                 <div class="section-title-v2">📊 紹介可能条件（CD向け）</div>
                 <div class="section-content-v2 intro-conditions-box">
-                    <strong>紹介レベル：</strong><span class="level-tag ${levelClass}">${data.introductionLevel || '—'}</span><br>
-                    ${data.introductionConditions}
+                    <strong>紹介レベル：</strong><span class="level-tag ${levelClass}">${data.introductionLevel || '—'}</span><br><br>
+                    ${data.introductionConditions.split('｜').map(item => item.trim()).join('<br>')}
                 </div>
             </div>
             ` : ''}
@@ -188,12 +188,22 @@ function createHPCard(data) {
     
     // 詳細ボタンのイベントリスナーを追加
     if (data.insights) {
+        console.log('💡 insightsデータあり:', data.name);
         const detailBtn = card.querySelector('.show-insights-btn');
+        console.log('🔍 詳細ボタン:', detailBtn);
         if (detailBtn) {
-            detailBtn.addEventListener('click', function() {
+            detailBtn.addEventListener('click', function(e) {
+                console.log('🖱️ 詳細ボタンがクリックされました:', data.name);
+                e.preventDefault();
+                e.stopPropagation();
                 showInsights(data.name, data.insights);
             });
+            console.log('✅ イベントリスナー追加完了:', data.name);
+        } else {
+            console.warn('⚠️ 詳細ボタンが見つかりません');
         }
+    } else {
+        console.log('⚠️ insightsデータなし');
     }
     
     return card;
