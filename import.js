@@ -110,6 +110,10 @@ function displayPreview() {
     parsedData.forEach((row, index) => {
         const tr = document.createElement('tr');
         
+        // デバッグ: 各行のキーを表示
+        console.log('行', index + 1, 'のキー:', Object.keys(row));
+        console.log('行', index + 1, 'のデータ:', row);
+        
         // 新形式（個人単位）対応
         const company = row['company'] || row['企業名'] || '—';
         const name = row['name'] || row['HP氏名1'] || '—';
@@ -117,6 +121,8 @@ function displayPreview() {
         const introLevel = row['introductionLevel'] || row['紹介レベル'] || '—';
         const contactType = getContactTypeLabel(row['contactType'] || row['接触形式']);
         const salesPerson = row['salesPerson'] || row['担当セールス'] || '—';
+        
+        console.log('変換後:', { company, name, roleLevel, introLevel, contactType, salesPerson });
         
         tr.innerHTML = `
             <td>${company}</td>
