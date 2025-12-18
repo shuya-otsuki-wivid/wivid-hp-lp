@@ -140,15 +140,6 @@ function createHPCard(data) {
             </div>
             ` : ''}
             
-            ${data.introductionDestination ? `
-            <div class="section-v2">
-                <div class="section-title-v2">🎯 紹介先</div>
-                <div class="section-content-v2">
-                    <span class="intro-destination-badge">${data.introductionDestination}</span>
-                </div>
-            </div>
-            ` : ''}
-            
             ${data.introductionConditions ? `
             <div class="section-v2 cd-only">
                 <div class="section-title-v2">📊 紹介可能条件（CD向け）</div>

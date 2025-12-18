@@ -129,7 +129,6 @@ async function loadHPData(id) {
             document.getElementById('roleLevel').value = data.roleLevel || '';
             document.getElementById('background').value = data.background || '';
             document.getElementById('achievements').value = data.achievements || '';
-            document.getElementById('introductionDestination').value = data.introductionDestination || '';
             document.getElementById('introductionLevel').value = data.introductionLevel || '';
             document.getElementById('introductionConditions').value = data.introductionConditions || '';
             document.getElementById('introductionOperation').value = data.introductionOperation || '';
@@ -163,7 +162,6 @@ document.getElementById('hpForm').addEventListener('submit', async (e) => {
         roleLevel: document.getElementById('roleLevel').value,
         background: document.getElementById('background').value,
         achievements: document.getElementById('achievements').value,
-        introductionDestination: document.getElementById('introductionDestination').value,
         introductionLevel: document.getElementById('introductionLevel').value,
         introductionConditions: document.getElementById('introductionConditions').value,
         introductionOperation: document.getElementById('introductionOperation').value,

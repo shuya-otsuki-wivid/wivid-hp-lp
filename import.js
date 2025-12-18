@@ -203,7 +203,6 @@ window.importData = async function() {
                 age: row['age'] || row['年齢層'] || '',
                 background: row['background'] || row['経歴'] || '',
                 achievements: row['achievements'] || row['成果・特徴'] || '',
-                introductionDestination: row['introductionDestination'] || row['紹介先'] || '',
                 introductionLevel: row['introductionLevel'] || row['紹介レベル'] || '',
                 introductionConditions: row['introductionConditions'] || row['紹介可能条件'] || '',
                 introductionOperation: row['introductionOperation'] || row['紹介オペレーション'] || '',
