@@ -1103,3 +1103,102 @@ section {
         gap: 20px;
     }
 }
+
+/* ==========================================
+   表示モード切り替え（CD向け / 就活生向け）
+   ========================================== */
+
+/* 表示モード切り替えボタン */
+.view-mode-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px;
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+}
+
+.toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    color: var(--color-text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 50px;
+    transition: var(--transition-fast);
+    white-space: nowrap;
+}
+
+.toggle-btn:hover {
+    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.toggle-btn.active {
+    background: var(--color-accent);
+    color: var(--color-primary);
+}
+
+/* CD向け情報（就活生モードでは非表示） */
+.cd-only {
+    transition: var(--transition-fast);
+}
+
+body.student-mode .cd-only {
+    display: none !important;
+}
+
+/* 就活生モード時のモードインジケーター */
+.mode-indicator {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--color-accent);
+    color: var(--color-primary);
+    padding: 12px 20px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 14px;
+    box-shadow: var(--shadow-lg);
+    z-index: 9999;
+    display: none;
+    animation: pulse 2s infinite;
+}
+
+body.student-mode .mode-indicator {
+    display: block;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(255, 241, 0, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(255, 241, 0, 0);
+    }
+}
+
+@media (max-width: 768px) {
+    .view-mode-toggle {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .toggle-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .mode-indicator {
+        bottom: 10px;
+        right: 10px;
+        font-size: 12px;
+        padding: 8px 14px;
+    }
+}

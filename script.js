@@ -83,119 +83,92 @@ async function loadHighPerformers() {
    ========================================== */
 function createHPCard(data) {
     const card = document.createElement('div');
-    card.className = 'hp-card';
+    card.className = 'hp-card-v2';
     
-    // data-属性を設定
-    const roleMap = {
-        '経営層': 'executive',
-        '人事責任者': 'hr',
-        '事業責任者': 'business',
-        'マネージャー': 'manager',
-        'リーダー': 'leader',
-        '特別表彰受賞者': 'award'
-    };
-    const contactMap = {
-        '個別面談': 'individual',
-        '座談会': 'group',
-        'イベント': 'group'
-    };
+    // data-属性を設定（フィルター用）
+    card.dataset.role = data.roleLevel || 'executive';
+    card.dataset.level = data.introductionLevel || 'C';
+    card.dataset.contact = data.contactType || 'individual';
+    card.dataset.company = data.company || '';
+    card.dataset.position = data.position || '';
+    card.dataset.age = data.age || '';
     
-    card.dataset.role = roleMap[data.position_level] || 'executive';
-    card.dataset.level = data.introduction_level || 'C';
-    card.dataset.contact = contactMap[data.contact_format] || 'individual';
+    // 経歴をリスト化
+    const backgroundList = data.background ? data.background.split('｜').map(item => `<li>${item}</li>`).join('') : '';
     
-    // カードヘッダーのクラス
-    const headerClass = roleMap[data.position_level] || 'executive';
+    // 得られる知見（簡潔版）をリスト化
+    const insightsBriefList = data.insightsBrief ? data.insightsBrief.split('｜').map(item => `<li>${item}</li>`).join('') : '';
     
-    // HP氏名を構築
-    let hpNamesHTML = '';
-    if (data.hp_name_1) {
-        hpNamesHTML += `<h3>${data.hp_name_1}${data.hp_role_1 ? 'さん（' + data.hp_role_1 + '）' : 'さん'}</h3>`;
-    }
-    if (data.hp_name_2) {
-        hpNamesHTML += `<h3>${data.hp_name_2}${data.hp_role_2 ? 'さん（' + data.hp_role_2 + '）' : 'さん'}</h3>`;
-    }
-    if (!hpNamesHTML) {
-        hpNamesHTML = '<h3>担当者</h3>';
-    }
-    
-    // 役職バッジ
-    let roleBadge = data.position_detail || data.position_level || '—';
-    
-    // 接触形式アイコン
-    const contactIcon = data.contact_format === '個別面談' ? '📍' : '👥';
+    // タグを配列化
+    const tagsArray = data.tags ? data.tags.split('｜') : [];
+    const tagsHTML = tagsArray.map(tag => `<span class="tag-badge">🏷️ ${tag}</span>`).join('');
     
     // 紹介レベルのクラス
-    const levelClass = `level-${(data.introduction_level || 'c').toLowerCase().replace('-', '-minus').replace('+', '-plus')}`;
+    const levelClass = `level-${(data.introductionLevel || 'c').toLowerCase().replace('-', '-minus').replace('+', '-plus')}`;
     
     card.innerHTML = `
-        <div class="card-header ${headerClass}">
-            <div class="company-info">
-                <span class="company-name">${data.company_name || '企業名不明'}</span>
-                <span class="company-size">${data.company_size || '規模不明'}</span>
-            </div>
-            <div class="role-badge">${roleBadge}</div>
-        </div>
-        <div class="card-body">
-            <div class="hp-names">
-                ${hpNamesHTML}
-            </div>
-            ${data.background ? `
-            <div class="hp-profile">
-                <p class="profile-item"><strong>経歴：</strong>${data.background}</p>
-                ${data.age_range ? `<p class="profile-item"><strong>年齢層：</strong>${data.age_range}</p>` : ''}
-            </div>
-            ` : ''}
-            ${data.achievements ? `
-            <div class="hp-features">
-                <p class="profile-item"><strong>成果・特徴：</strong>${data.achievements}</p>
-            </div>
-            ` : ''}
-            <div class="contact-info">
-                <span class="contact-type">${contactIcon} ${data.contact_format || '—'}${data.contact_format_detail ? ' (' + data.contact_format_detail + ')' : ''}</span>
-                <span class="sales-person">担当：${data.sales_contact || '—'}</span>
-            </div>
-            ${data.insights ? `
-            <div class="special-note">
-                <p>⭐ ${data.insights}</p>
-            </div>
-            ` : ''}
-        </div>
-        <div class="card-requirements">
-            <h4>紹介可能条件</h4>
-            <div class="req-grid">
-                ${data.education_requirement ? `
-                <div class="req-item">
-                    <span class="req-label">学歴</span>
-                    <span class="req-value">${data.education_requirement}</span>
-                </div>
-                ` : ''}
-                <div class="req-item">
-                    <span class="req-label">レベル</span>
-                    <span class="level-tag ${levelClass}">${data.introduction_level || '—'}</span>
-                </div>
-                ${data.experience_requirement ? `
-                <div class="req-item">
-                    <span class="req-label">経験</span>
-                    <span class="req-value">${data.experience_requirement}</span>
-                </div>
-                ` : ''}
-                ${data.student_mindset ? `
-                <div class="req-item">
-                    <span class="req-label">志向性</span>
-                    <span class="req-value">${data.student_mindset}</span>
-                </div>
-                ` : ''}
-                ${data.introduction_flow ? `
-                <div class="req-item">
-                    <span class="req-label">紹介フロー</span>
-                    <span class="req-value">${data.introduction_flow}</span>
-                </div>
-                ` : ''}
+        <div class="card-header-v2">
+            <div class="hp-name-large">${data.name || '氏名不明'}さん</div>
+            <div class="company-info-row">${data.company || '企業名不明'}</div>
+            <div class="position-info-row">
+                <span class="position-badge-v2">💼 ${data.position || '役職不明'}</span>
+                ${data.age ? `<span class="age-badge">👤 ${data.age}</span>` : ''}
             </div>
         </div>
-        <div class="card-footer">
-            <button class="detail-btn" onclick="toggleDetails(this)">詳細を見る</button>
+        
+        <div class="card-body-v2">
+            ${backgroundList ? `
+            <div class="section-v2">
+                <div class="section-title-v2">📚 経歴</div>
+                <div class="section-content-v2">
+                    <ul class="background-list">${backgroundList}</ul>
+                </div>
+            </div>
+            ` : ''}
+            
+            ${data.introductionDestination ? `
+            <div class="section-v2">
+                <div class="section-title-v2">🎯 紹介先</div>
+                <div class="section-content-v2">
+                    <span class="intro-destination-badge">${data.introductionDestination}</span>
+                </div>
+            </div>
+            ` : ''}
+            
+            ${data.introductionConditions ? `
+            <div class="section-v2 cd-only">
+                <div class="section-title-v2">📊 紹介可能条件（CD向け）</div>
+                <div class="section-content-v2 intro-conditions-box">
+                    <strong>紹介レベル：</strong><span class="level-tag ${levelClass}">${data.introductionLevel || '—'}</span><br>
+                    ${data.introductionConditions}
+                </div>
+            </div>
+            ` : ''}
+            
+            ${data.introductionOperation ? `
+            <div class="section-v2 cd-only">
+                <div class="section-title-v2">📋 紹介オペレーション</div>
+                <div class="section-content-v2">${data.introductionOperation}</div>
+            </div>
+            ` : ''}
+            
+            ${insightsBriefList ? `
+            <div class="section-v2">
+                <div class="section-title-v2">💡 得られる知見</div>
+                <div class="section-content-v2 insights-preview">
+                    <ul>${insightsBriefList}</ul>
+                </div>
+            </div>
+            ` : ''}
+            
+            ${tagsHTML ? `
+            <div class="tags-row">${tagsHTML}</div>
+            ` : ''}
+        </div>
+        
+        <div class="card-footer-v2">
+            <span class="sales-info">担当：${data.salesPerson || '—'}</span>
+            ${data.insights ? `<button class="detail-btn-v2" onclick="showInsights('${encodeURIComponent(data.name)}', '${encodeURIComponent(data.insights || '')}')">詳細を見る</button>` : ''}
         </div>
     `;
     
@@ -203,7 +176,7 @@ function createHPCard(data) {
 }
 
 /* ==========================================
-   詳細表示トグル
+   詳細表示トグル（旧カード用）
    ========================================== */
 window.toggleDetails = function(button) {
     const card = button.closest('.hp-card');
@@ -219,11 +192,65 @@ window.toggleDetails = function(button) {
 };
 
 /* ==========================================
+   得られる知見の詳細表示（新カード用）
+   ========================================== */
+window.showInsights = function(name, insights) {
+    const decodedName = decodeURIComponent(name);
+    const decodedInsights = decodeURIComponent(insights);
+    
+    // モーダルが既に存在する場合は削除
+    const existingModal = document.getElementById('insightsModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    // モーダルを作成
+    const modal = document.createElement('div');
+    modal.id = 'insightsModal';
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-content-large" onclick="event.stopPropagation()">
+            <div class="modal-header-large">
+                <h2>💡 ${decodedName}さんと話すことで得られる知見</h2>
+                <button class="modal-close-btn" onclick="closeInsightsModal()">&times;</button>
+            </div>
+            <div class="modal-body-large">
+                <div class="insights-section">
+                    ${decodedInsights.split('｜').map(item => `<p>${item}</p>`).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // モーダルを表示
+    setTimeout(() => {
+        modal.classList.add('show');
+    }, 10);
+    
+    // 背景クリックで閉じる
+    modal.addEventListener('click', function() {
+        closeInsightsModal();
+    });
+};
+
+window.closeInsightsModal = function() {
+    const modal = document.getElementById('insightsModal');
+    if (modal) {
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.remove();
+        }, 300);
+    }
+};
+
+/* ==========================================
    フィルター機能
    ========================================== */
 function initFilters() {
     const filterButtons = document.querySelectorAll('.filter-btn');
-    const hpCards = document.querySelectorAll('.hp-card');
+    const hpCards = document.querySelectorAll('.hp-card, .hp-card-v2');
     
     // 現在のフィルター状態
     const activeFilters = {

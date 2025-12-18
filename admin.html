@@ -311,78 +311,59 @@
             <form id="hpForm">
                 <input type="hidden" id="hpId">
                 
-                <h3 style="color: var(--color-accent); margin-bottom: 16px;">基本情報</h3>
+                <h3 style="color: var(--color-accent); margin-bottom: 16px;">基本情報（個人単位）</h3>
                 
                 <div class="form-row">
                     <div class="form-group">
-                        <label>企業名 <span style="color: var(--color-pink);">*</span></label>
-                        <input type="text" id="companyName" required>
+                        <label>氏名 <span style="color: var(--color-pink);">*</span></label>
+                        <input type="text" id="name" required placeholder="例: 田中雄土">
                     </div>
                     <div class="form-group">
-                        <label>企業規模</label>
-                        <input type="text" id="companySize" placeholder="例: 36名">
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>業界</label>
-                    <input type="text" id="industry" placeholder="例: 不動産コンサルティング">
-                </div>
-                
-                <h3 style="color: var(--color-accent); margin: 32px 0 16px;">ハイパフォーマー情報</h3>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>HP氏名1 <span style="color: var(--color-pink);">*</span></label>
-                        <input type="text" id="hpName1" required placeholder="例: 田中 雄土">
-                    </div>
-                    <div class="form-group">
-                        <label>HP役職1</label>
-                        <input type="text" id="hpRole1" placeholder="例: CEO">
+                        <label>会社名 <span style="color: var(--color-pink);">*</span></label>
+                        <input type="text" id="company" required placeholder="例: EZO CONSULTING GROUP">
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
-                        <label>HP氏名2</label>
-                        <input type="text" id="hpName2" placeholder="例: 油井 航平">
+                        <label>役職 <span style="color: var(--color-pink);">*</span></label>
+                        <input type="text" id="position" required placeholder="例: 代表取締役 CEO">
                     </div>
                     <div class="form-group">
-                        <label>HP役職2</label>
-                        <input type="text" id="hpRole2" placeholder="例: COO">
+                        <label>年齢</label>
+                        <input type="text" id="age" placeholder="例: 30代後半">
                     </div>
                 </div>
                 
-                <div class="form-row">
                 <div class="form-group">
                     <label>役職レベル <span style="color: var(--color-pink);">*</span></label>
-                    <select id="positionLevel" required>
+                    <select id="roleLevel" required>
                         <option value="">選択してください</option>
-                        <option value="経営層">経営層</option>
-                        <option value="人事責任者">人事責任者</option>
-                        <option value="事業責任者">事業責任者</option>
-                        <option value="マネージャー">マネージャー</option>
-                        <option value="リーダー">リーダー</option>
-                        <option value="特別表彰受賞者">特別表彰受賞者</option>
+                        <option value="executive">経営層</option>
+                        <option value="hr">人事責任者</option>
+                        <option value="business">事業責任者</option>
+                        <option value="manager">マネージャー</option>
+                        <option value="leader">リーダー</option>
+                        <option value="award">特別表彰受賞者</option>
                     </select>
                 </div>
-                    <div class="form-group">
-                        <label>年齢層</label>
-                        <input type="text" id="ageRange" placeholder="例: 30代後半">
-                    </div>
-                </div>
                 
                 <div class="form-group">
-                    <label>経歴</label>
-                    <textarea id="background" placeholder="早稲田大学卒。プロアルペンスキーヤーから..."></textarea>
+                    <label>経歴 <span style="color: var(--color-pink);">*</span></label>
+                    <textarea id="background" required placeholder="早稲田大学卒業｜プロアルペンスキーヤーとして活動｜...（｜で区切る）"></textarea>
                 </div>
                 
                 <div class="form-group">
                     <label>成果・特徴</label>
-                    <textarea id="achievements" placeholder="全日本スキー選手権3位の実績..."></textarea>
+                    <textarea id="achievements" placeholder="全日本スキー選手権3位の実績｜大手不動産会社での9年間の実務経験｜...（｜で区切る）"></textarea>
                 </div>
                 
-                <h3 style="color: var(--color-accent); margin: 32px 0 16px;">紹介条件</h3>
+                <h3 style="color: var(--color-accent); margin: 32px 0 16px;">紹介情報</h3>
+                
+                <div class="form-group">
+                    <label>紹介先（どんな学生に紹介するか）</label>
+                    <textarea id="introductionDestination" placeholder="不動産・金融業界志望の学生｜起業志向のある学生｜..."></textarea>
+                </div>
                 
                 <div class="form-group">
                     <label>紹介レベル <span style="color: var(--color-pink);">*</span></label>
@@ -396,48 +377,42 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>学歴要件</label>
-                    <textarea id="educationReq" placeholder="旧帝大早慶、海外大学..."></textarea>
+                    <label>紹介可能条件（CD向け内部情報）</label>
+                    <textarea id="introductionConditions" placeholder="学歴：旧帝大早慶、海外大学...｜バッティング企業：外コン・外銀...｜学生時代の活動例：体育会系..."></textarea>
                 </div>
                 
                 <div class="form-group">
-                    <label>経験要件</label>
-                    <textarea id="experienceReq" placeholder="体育会系の部活動経験..."></textarea>
+                    <label>紹介オペレーション</label>
+                    <textarea id="introductionOperation" placeholder="システムでガクチカ・就活軸・将来像・他社選考状況を記載して案件報告する"></textarea>
                 </div>
                 
-                <div class="form-group">
-                    <label>志向性要件</label>
-                    <textarea id="mindsetReq" placeholder="とにかくよく食べる子、体力がある..."></textarea>
-                </div>
-                
-                <h3 style="color: var(--color-accent); margin: 32px 0 16px;">接触形式</h3>
+                <h3 style="color: var(--color-accent); margin: 32px 0 16px;">接触形式と知見</h3>
                 
                 <div class="form-group">
                     <label>接触形式 <span style="color: var(--color-pink);">*</span></label>
-                    <select id="contactFormat" required>
+                    <select id="contactType" required>
                         <option value="">選択してください</option>
-                        <option value="個別面談">個別面談</option>
-                        <option value="座談会">座談会</option>
-                        <option value="イベント">イベント</option>
+                        <option value="individual">個別面談</option>
+                        <option value="group">座談会/イベント</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
-                    <label>接触形式詳細</label>
-                    <textarea id="contactDetail" placeholder="初回から代表が対応..."></textarea>
+                    <label>得られる知見（簡潔版・就活生にも見せる）</label>
+                    <textarea id="insightsBrief" placeholder="キャリアの掛け算の威力｜転身の再現性｜起業家としての到達点...（｜で区切る）"></textarea>
                 </div>
                 
                 <div class="form-group">
-                    <label>得られる知見</label>
-                    <textarea id="insights" placeholder="不動産投資の目利き力、スポーツと経営の両立..."></textarea>
+                    <label>得られる知見（詳細版・CD向け）</label>
+                    <textarea id="insights" placeholder="【キャリアの掛け算の威力】一見無関係な経験が、後に最強の武器になる...｜【転身の再現性】..."></textarea>
                 </div>
                 
-                <h3 style="color: var(--color-accent); margin: 32px 0 16px;">紹介オペレーション</h3>
+                <h3 style="color: var(--color-accent); margin: 32px 0 16px;">担当・タグ</h3>
                 
                 <div class="form-row">
                     <div class="form-group">
                         <label>担当セールス <span style="color: var(--color-pink);">*</span></label>
-                        <select id="salesContact" required>
+                        <select id="salesPerson" required>
                             <option value="">選択してください</option>
                             <option value="山本">山本</option>
                             <option value="堀内">堀内</option>
@@ -446,14 +421,9 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>リードタイム</label>
-                        <input type="text" id="leadTime" placeholder="例: 約3営業日">
+                        <label>タグ（検索用）</label>
+                        <input type="text" id="tags" placeholder="起業家｜不動産｜元アスリート｜早稲田（｜で区切る）">
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>紹介フロー</label>
-                    <textarea id="introFlow" placeholder="1. 学生情報を担当セールスに共有 2. セールスがHPと調整..."></textarea>
                 </div>
                 
                 <div class="form-group">
@@ -490,4 +460,5 @@
     </script>
 </body>
 </html>
+
 

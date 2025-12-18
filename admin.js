@@ -43,27 +43,41 @@ async function loadHighPerformers() {
             const data = doc.data();
             const row = document.createElement('tr');
             
-            const hpName = data.hp_name_1 || '—';
-            const statusClass = data.is_active ? 'status-active' : 'status-inactive';
-            const statusText = data.is_active ? '公開中' : '非公開';
+            const name = data.name || '—';
+            const company = data.company || '—';
+            const roleLevel = getRoleLevelLabel(data.roleLevel);
+            const statusClass = data.is_active !== false ? 'status-active' : 'status-inactive';
+            const statusText = data.is_active !== false ? '公開中' : '非公開';
             
             row.innerHTML = `
-                <td>${data.company_name || '—'}</td>
-                <td>${hpName}</td>
-                <td>${data.position_level || '—'}</td>
-                <td><span class="level-tag level-${(data.introduction_level || '').toLowerCase().replace('-', '-minus').replace('+', '-plus')}">${data.introduction_level || '—'}</span></td>
-                <td>${data.sales_contact || '—'}</td>
+                <td>${company}</td>
+                <td>${name}</td>
+                <td>${roleLevel}</td>
+                <td><span class="level-tag level-${(data.introductionLevel || '').toLowerCase().replace('-', '-minus').replace('+', '-plus')}">${data.introductionLevel || '—'}</span></td>
+                <td>${data.salesPerson || '—'}</td>
                 <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                 <td>
                     <div class="action-buttons">
                         <button class="btn-edit" onclick="editHP('${doc.id}')">編集</button>
-                        <button class="btn-delete" onclick="deleteHP('${doc.id}', '${data.company_name}')">削除</button>
+                        <button class="btn-delete" onclick="deleteHP('${doc.id}', '${name}')">削除</button>
                     </div>
                 </td>
             `;
             
             tbody.appendChild(row);
         });
+        
+        function getRoleLevelLabel(roleLevel) {
+            const labels = {
+                'executive': '経営層',
+                'hr': '人事責任者',
+                'business': '事業責任者',
+                'manager': 'マネージャー',
+                'leader': 'リーダー',
+                'award': '特別表彰受賞者'
+            };
+            return labels[roleLevel] || roleLevel || '—';
+        }
     } catch (error) {
         console.error('データ読み込みエラー:', error);
         tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px; color: #E4007F;">データの読み込みに失敗しました。</td></tr>';
@@ -108,28 +122,22 @@ async function loadHPData(id) {
             const data = docSnap.data();
             
             document.getElementById('hpId').value = id;
-            document.getElementById('companyName').value = data.company_name || '';
-            document.getElementById('companySize').value = data.company_size || '';
-            document.getElementById('industry').value = data.industry || '';
-            document.getElementById('hpName1').value = data.hp_name_1 || '';
-            document.getElementById('hpRole1').value = data.hp_role_1 || '';
-            document.getElementById('hpName2').value = data.hp_name_2 || '';
-            document.getElementById('hpRole2').value = data.hp_role_2 || '';
-            document.getElementById('positionLevel').value = data.position_level || '';
-            document.getElementById('ageRange').value = data.age_range || '';
+            document.getElementById('name').value = data.name || '';
+            document.getElementById('company').value = data.company || '';
+            document.getElementById('position').value = data.position || '';
+            document.getElementById('age').value = data.age || '';
+            document.getElementById('roleLevel').value = data.roleLevel || '';
             document.getElementById('background').value = data.background || '';
             document.getElementById('achievements').value = data.achievements || '';
-            document.getElementById('introductionLevel').value = data.introduction_level || '';
-            document.getElementById('educationReq').value = data.education_requirement || '';
-            document.getElementById('experienceReq').value = data.experience_requirement || '';
-            document.getElementById('mindsetReq').value = data.student_mindset || '';
-            document.getElementById('contactFormat').value = data.contact_format || '';
-            document.getElementById('contactDetail').value = data.contact_format_detail || '';
+            document.getElementById('introductionDestination').value = data.introductionDestination || '';
+            document.getElementById('introductionLevel').value = data.introductionLevel || '';
+            document.getElementById('introductionConditions').value = data.introductionConditions || '';
+            document.getElementById('introductionOperation').value = data.introductionOperation || '';
+            document.getElementById('contactType').value = data.contactType || '';
+            document.getElementById('insightsBrief').value = data.insightsBrief || '';
             document.getElementById('insights').value = data.insights || '';
-            document.getElementById('salesContact').value = data.sales_contact || '';
-            document.getElementById('leadTime').value = data.lead_time || '';
-            document.getElementById('introFlow').value = data.introduction_flow || '';
-            document.getElementById('isActive').value = data.is_active ? 'true' : 'false';
+            document.getElementById('salesPerson').value = data.salesPerson || '';
+            document.getElementById('tags').value = data.tags || '';
         }
     } catch (error) {
         console.error('データ読み込みエラー:', error);
@@ -147,28 +155,23 @@ document.getElementById('hpForm').addEventListener('submit', async (e) => {
     const userEmail = user ? user.email : 'unknown';
     
     const data = {
-        company_name: document.getElementById('companyName').value,
-        company_size: document.getElementById('companySize').value,
-        industry: document.getElementById('industry').value,
-        hp_name_1: document.getElementById('hpName1').value,
-        hp_role_1: document.getElementById('hpRole1').value,
-        hp_name_2: document.getElementById('hpName2').value,
-        hp_role_2: document.getElementById('hpRole2').value,
-        position_level: document.getElementById('positionLevel').value,
-        age_range: document.getElementById('ageRange').value,
+        name: document.getElementById('name').value,
+        company: document.getElementById('company').value,
+        position: document.getElementById('position').value,
+        age: document.getElementById('age').value,
+        roleLevel: document.getElementById('roleLevel').value,
         background: document.getElementById('background').value,
         achievements: document.getElementById('achievements').value,
-        introduction_level: document.getElementById('introductionLevel').value,
-        education_requirement: document.getElementById('educationReq').value,
-        experience_requirement: document.getElementById('experienceReq').value,
-        student_mindset: document.getElementById('mindsetReq').value,
-        contact_format: document.getElementById('contactFormat').value,
-        contact_format_detail: document.getElementById('contactDetail').value,
+        introductionDestination: document.getElementById('introductionDestination').value,
+        introductionLevel: document.getElementById('introductionLevel').value,
+        introductionConditions: document.getElementById('introductionConditions').value,
+        introductionOperation: document.getElementById('introductionOperation').value,
+        contactType: document.getElementById('contactType').value,
+        insightsBrief: document.getElementById('insightsBrief').value,
         insights: document.getElementById('insights').value,
-        sales_contact: document.getElementById('salesContact').value,
-        lead_time: document.getElementById('leadTime').value,
-        introduction_flow: document.getElementById('introFlow').value,
-        is_active: document.getElementById('isActive').value === 'true',
+        salesPerson: document.getElementById('salesPerson').value,
+        tags: document.getElementById('tags').value,
+        is_active: true, // デフォルトで公開
         updated_at: serverTimestamp(),
         updated_by: userEmail
     };
