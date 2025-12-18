@@ -126,9 +126,16 @@ img {
     font-weight: 700;
 }
 
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
 .nav-links {
     display: flex;
     gap: 32px;
+    list-style: none;
 }
 
 .nav-links a {

@@ -42,28 +42,29 @@
                 <span class="logo-text">Wivid</span>
                 <span class="logo-badge">HP</span>
             </a>
-            <ul class="nav-links">
-                <li><a href="#highperformers">ハイパフォーマー一覧</a></li>
-                <li><a href="#how-to-use">活用方法</a></li>
-                <li><a href="#conditions">紹介条件</a></li>
-                <li><a href="admin.html">管理画面</a></li>
-                <li><a href="import.html">CSV一括インポート</a></li>
-                <li><a href="login-history.html">ログイン履歴</a></li>
-                <li><a href="prototype.html" style="color: #FFF100;">新デザイン確認</a></li>
-                <li><a href="#" id="signOutBtn" style="color: #E4007F;">ログアウト</a></li>
-            </ul>
             
-            <!-- 表示モード切り替え -->
-            <div class="view-mode-toggle">
-                <button class="toggle-btn active" id="cdModeBtn" onclick="switchToCDMode()">
-                    👔 CD向けモード
-                </button>
-                <button class="toggle-btn" id="studentModeBtn" onclick="switchToStudentMode()">
-                    🎓 就活生向けモード
-                </button>
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="#highperformers">ハイパフォーマー一覧</a></li>
+                    <li><a href="#how-to-use">活用方法</a></li>
+                    <li><a href="#conditions">紹介条件</a></li>
+                    <li><a href="admin.html">管理画面</a></li>
+                    <li><a href="import.html">CSV一括インポート</a></li>
+                    <li><a href="login-history.html">ログイン履歴</a></li>
+                    <li><a href="prototype.html" style="color: #FFF100;">新デザイン確認</a></li>
+                    <li><a href="#" id="signOutBtn" style="color: #E4007F;">ログアウト</a></li>
+                </ul>
+                
+                <!-- 表示モード切り替え -->
+                <div class="view-mode-toggle">
+                    <button class="toggle-btn active" id="cdModeBtn" onclick="switchToCDMode()">
+                        👔 CD向け
+                    </button>
+                    <button class="toggle-btn" id="studentModeBtn" onclick="switchToStudentMode()">
+                        🎓 就活生向け
+                    </button>
+                </div>
             </div>
-            
-            <span class="nav-label" id="userEmail">Career Designer向け社内ツール</span>
         </div>
     </nav>
 
