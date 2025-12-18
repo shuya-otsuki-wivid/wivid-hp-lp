@@ -20,6 +20,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 let allHighPerformers = [];
+window.hpInsightsData = []; // 詳細表示用のデータ保存（グローバル公開）
 
 document.addEventListener('DOMContentLoaded', function() {
     // Firestoreからデータを読み込み
@@ -184,34 +185,18 @@ function createHPCard(data) {
         
         <div class="card-footer-v2">
             <span class="sales-info">担当：${data.salesPerson || '—'}</span>
-            ${data.insights ? `<button class="detail-btn-v2" onclick="window.openHPInsights('${escapeForAttribute(data.name)}', '${escapeForAttribute(data.insights)}')">詳細を見る</button>` : ''}
+            ${data.insights ? (() => {
+                // データをグローバル配列に保存
+                const idx = window.hpInsightsData.length;
+                window.hpInsightsData.push({ name: data.name, insights: data.insights });
+                return `<button class="detail-btn-v2" onclick="window.openHPInsights(${idx})">詳細を見る</button>`;
+            })() : ''}
         </div>
     `;
     
     return card;
 }
 
-// HTML属性用のエスケープ関数
-function escapeForAttribute(str) {
-    if (!str) return '';
-    return str
-        .replace(/\\/g, '\\\\')
-        .replace(/'/g, "\\'")
-        .replace(/"/g, '&quot;')
-        .replace(/\n/g, '\\n')
-        .replace(/\r/g, '\\r');
-}
-
-// HTML属性のエスケープを元に戻す関数
-function unescapeAttribute(str) {
-    if (!str) return '';
-    return str
-        .replace(/\\r/g, '\r')
-        .replace(/\\n/g, '\n')
-        .replace(/&quot;/g, '"')
-        .replace(/\\'/g, "'")
-        .replace(/\\\\/g, '\\');
-}
 
 /* ==========================================
    詳細表示トグル（旧カード用）
@@ -232,12 +217,19 @@ window.toggleDetails = function(button) {
 /* ==========================================
    得られる知見の詳細表示（新カード用）
    ========================================== */
-window.openHPInsights = function(name, insights) {
-    console.log('🔍 openHPInsights called:', { name, insightsLength: insights ? insights.length : 0 });
+window.openHPInsights = function(idx) {
+    console.log('🔍 openHPInsights called with idx:', idx);
     
-    // エスケープを元に戻す
-    let displayName = unescapeAttribute(name);
-    let displayInsights = unescapeAttribute(insights);
+    // グローバル配列からデータを取得
+    const data = window.hpInsightsData[idx];
+    if (!data) {
+        console.error('❌ データが見つかりません:', idx);
+        return;
+    }
+    
+    const displayName = data.name;
+    const displayInsights = data.insights;
+    console.log('✅ データ取得成功:', { name: displayName, insightsLength: displayInsights.length });
     
     // モーダルが既に存在する場合は削除
     const existingModal = document.getElementById('insightsModal');
