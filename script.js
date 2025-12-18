@@ -27,6 +27,31 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // スムーススクロール
     initSmoothScroll();
+    
+    // 詳細ボタンのイベントデリゲーション
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('show-insights-btn')) {
+            console.log('🖱️ 詳細ボタンがクリックされました');
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // 親カードからデータを取得
+            const card = e.target.closest('.hp-card-v2');
+            if (card) {
+                const name = card.dataset.hpName;
+                const insights = card.dataset.hpInsights;
+                console.log('📊 取得したデータ:', { name, insightsLength: insights ? insights.length : 0 });
+                
+                if (insights) {
+                    showInsights(name, insights);
+                } else {
+                    console.warn('⚠️ insightsデータが見つかりません');
+                }
+            } else {
+                console.warn('⚠️ カード要素が見つかりません');
+            }
+        }
+    });
 });
 
 /* ==========================================
@@ -82,6 +107,12 @@ async function loadHighPerformers() {
    HPカードを生成
    ========================================== */
 function createHPCard(data) {
+    console.log('🔍 createHPCard called:', {
+        name: data.name,
+        hasInsights: !!data.insights,
+        insightsLength: data.insights ? data.insights.length : 0
+    });
+    
     const card = document.createElement('div');
     card.className = 'hp-card-v2';
     
@@ -185,26 +216,6 @@ function createHPCard(data) {
             ${data.insights ? `<button class="detail-btn-v2 show-insights-btn">詳細を見る</button>` : ''}
         </div>
     `;
-    
-    // 詳細ボタンのイベントリスナーを追加
-    if (data.insights) {
-        console.log('💡 insightsデータあり:', data.name);
-        const detailBtn = card.querySelector('.show-insights-btn');
-        console.log('🔍 詳細ボタン:', detailBtn);
-        if (detailBtn) {
-            detailBtn.addEventListener('click', function(e) {
-                console.log('🖱️ 詳細ボタンがクリックされました:', data.name);
-                e.preventDefault();
-                e.stopPropagation();
-                showInsights(data.name, data.insights);
-            });
-            console.log('✅ イベントリスナー追加完了:', data.name);
-        } else {
-            console.warn('⚠️ 詳細ボタンが見つかりません');
-        }
-    } else {
-        console.log('⚠️ insightsデータなし');
-    }
     
     return card;
 }
