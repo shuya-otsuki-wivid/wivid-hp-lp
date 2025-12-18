@@ -93,6 +93,10 @@ function createHPCard(data) {
     card.dataset.position = data.position || '';
     card.dataset.age = data.age || '';
     
+    // 詳細モーダル用のデータを保存
+    card.dataset.hpName = data.name || '';
+    card.dataset.hpInsights = data.insights || '';
+    
     // 経歴をリスト化
     const backgroundList = data.background ? data.background.split('｜').map(item => `<li>${item}</li>`).join('') : '';
     
@@ -187,9 +191,19 @@ function createHPCard(data) {
         
         <div class="card-footer-v2">
             <span class="sales-info">担当：${data.salesPerson || '—'}</span>
-            ${data.insights ? `<button class="detail-btn-v2" onclick="showInsights('${encodeURIComponent(data.name)}', '${encodeURIComponent(data.insights || '')}')">詳細を見る</button>` : ''}
+            ${data.insights ? `<button class="detail-btn-v2 show-insights-btn">詳細を見る</button>` : ''}
         </div>
     `;
+    
+    // 詳細ボタンのイベントリスナーを追加
+    if (data.insights) {
+        const detailBtn = card.querySelector('.show-insights-btn');
+        if (detailBtn) {
+            detailBtn.addEventListener('click', function() {
+                showInsights(data.name, data.insights);
+            });
+        }
+    }
     
     return card;
 }
@@ -214,8 +228,23 @@ window.toggleDetails = function(button) {
    得られる知見の詳細表示（新カード用）
    ========================================== */
 window.showInsights = function(name, insights) {
-    const decodedName = decodeURIComponent(name);
-    const decodedInsights = decodeURIComponent(insights);
+    console.log('📢 showInsights called:', { name, insights });
+    
+    // データが既にエンコードされているかチェック
+    let displayName = name;
+    let displayInsights = insights;
+    
+    try {
+        // URLエンコードされている場合はデコード
+        if (name && name.includes('%')) {
+            displayName = decodeURIComponent(name);
+        }
+        if (insights && insights.includes('%')) {
+            displayInsights = decodeURIComponent(insights);
+        }
+    } catch (e) {
+        console.log('デコード不要:', e);
+    }
     
     // モーダルが既に存在する場合は削除
     const existingModal = document.getElementById('insightsModal');
@@ -227,15 +256,23 @@ window.showInsights = function(name, insights) {
     const modal = document.createElement('div');
     modal.id = 'insightsModal';
     modal.className = 'modal-overlay';
+    
+    // HTMLエスケープ関数
+    const escapeHtml = (str) => {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    };
+    
     modal.innerHTML = `
         <div class="modal-content-large" onclick="event.stopPropagation()">
             <div class="modal-header-large">
-                <h2>💡 ${decodedName}さんと話すことで得られる知見</h2>
+                <h2>💡 ${escapeHtml(displayName)}さんと話すことで得られる知見</h2>
                 <button class="modal-close-btn" onclick="closeInsightsModal()">&times;</button>
             </div>
             <div class="modal-body-large">
                 <div class="insights-section">
-                    ${decodedInsights.split('｜').map(item => `<p>${item}</p>`).join('')}
+                    ${displayInsights.split('｜').map(item => `<p>${escapeHtml(item)}</p>`).join('')}
                 </div>
             </div>
         </div>
