@@ -68,9 +68,6 @@ async function checkAndAddAdminLinks() {
 }
 
 document.addEventListener('DOMContentLoaded', async function() {
-    // 管理者チェックして管理者専用リンクを追加
-    await checkAndAddAdminLinks();
-    
     // Firestoreからデータを読み込み
     loadHighPerformers();
     
@@ -102,6 +99,12 @@ document.addEventListener('DOMContentLoaded', async function() {
             window.closeInsightsModal();
         }
     });
+});
+
+// 認証完了後に管理者リンクをチェック
+window.addEventListener('authComplete', async function() {
+    console.log('🔐 認証完了イベント受信 - 管理者チェック開始');
+    await checkAndAddAdminLinks();
 });
 
 /* ==========================================

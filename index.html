@@ -15,7 +15,7 @@
         import { checkAuthState } from './auth.js';
         
         // 認証状態をチェック
-        checkAuthState((authState) => {
+        checkAuthState(async (authState) => {
             if (!authState.authenticated) {
                 // 未認証の場合、ログインページへリダイレクト
                 window.location.href = 'login.html';
@@ -23,6 +23,9 @@
                 // 認証済みの場合、ページを表示
                 document.body.style.display = 'block';
                 console.log('✅ ログイン中:', authState.user.email);
+                
+                // 認証完了後に管理者リンクをチェック
+                window.dispatchEvent(new CustomEvent('authComplete'));
             }
         });
     </script>
