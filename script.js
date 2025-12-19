@@ -278,7 +278,33 @@ window.openHPInsights = function(idx) {
     
     // タイトルと内容を設定
     modalTitle.textContent = `💡 ${displayName}さんと話すことで得られる知見`;
-    modalContent.innerHTML = displayInsights.split('｜').map(item => `<p>${escapeHtml(item)}</p>`).join('');
+    
+    // 【見出し】本文 形式をHTMLに変換
+    const sections = displayInsights.split('｜').map(item => {
+        const trimmed = item.trim();
+        if (!trimmed) return '';
+        
+        // 【見出し】本文 形式をパース
+        const match = trimmed.match(/^【(.+?)】(.*)$/s);
+        if (match) {
+            const title = match[1];
+            const content = match[2].trim();
+            // 「。」で区切られた文を箇条書きに
+            const sentences = content.split('。').filter(s => s.trim());
+            const listItems = sentences.map(s => `<li>${escapeHtml(s.trim())}。</li>`).join('');
+            return `
+                <div class="insights-subsection">
+                    <h4 class="insights-subtitle">🔹 ${escapeHtml(title)}</h4>
+                    <ul class="insights-list">${listItems}</ul>
+                </div>
+            `;
+        } else {
+            // 通常のテキスト
+            return `<p>${escapeHtml(trimmed)}</p>`;
+        }
+    }).join('');
+    
+    modalContent.innerHTML = sections;
     
     // モーダルを表示（CSSクラスで制御）
     modal.classList.add('show');
