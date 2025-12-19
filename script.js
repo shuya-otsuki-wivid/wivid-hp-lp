@@ -111,6 +111,9 @@ async function loadHighPerformers() {
 function createHPCard(data) {
     console.log('🔍 createHPCard called:', {
         name: data.name,
+        roleLevel: data.roleLevel,
+        introductionLevel: data.introductionLevel,
+        contactType: data.contactType,
         hasInsights: !!data.insights,
         insightsLength: data.insights ? data.insights.length : 0
     });
@@ -365,12 +368,20 @@ function initFilters() {
 }
 
 function filterCards(cards, filters) {
+    console.log('🔍 フィルター実行:', filters);
     let visibleCount = 0;
     
     cards.forEach(card => {
         const cardRole = card.dataset.role;
         const cardLevel = card.dataset.level;
         const cardContact = card.dataset.contact;
+        
+        console.log('カードデータ:', {
+            name: card.querySelector('.hp-name')?.textContent || '不明',
+            role: cardRole,
+            level: cardLevel,
+            contact: cardContact
+        });
         
         const matchRole = filters.role === 'all' || filters.role === cardRole;
         const matchLevel = filters.level === 'all' || filters.level === cardLevel;
