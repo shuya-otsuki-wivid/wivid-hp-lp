@@ -43,8 +43,7 @@ async function checkAndAddAdminLinks() {
                     { href: 'admin.html', text: '管理画面' },
                     { href: 'import.html', text: 'CSV一括インポート' },
                     { href: 'login-history.html', text: 'ログイン履歴' },
-                    { href: 'admin-management.html', text: '管理者管理' },
-                    { href: 'prototype.html', text: '新デザイン確認', style: 'color: #FFF100;' }
+                    { href: 'admin-management.html', text: '管理者管理' }
                 ];
                 
                 adminLinks.forEach(link => {
