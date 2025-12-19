@@ -4,6 +4,7 @@
 
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 import { getFirestore, collection, getDocs, query, where } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { isAdmin } from './admin-check.js';
 
 // Firebase設定
 const firebaseConfig = {
@@ -22,7 +23,54 @@ const db = getFirestore(app);
 let allHighPerformers = [];
 window.hpInsightsData = []; // 詳細表示用のデータ保存（グローバル公開）
 
-document.addEventListener('DOMContentLoaded', function() {
+/* ==========================================
+   管理者チェックして管理者専用リンクを追加
+   ========================================== */
+async function checkAndAddAdminLinks() {
+    try {
+        const adminStatus = await isAdmin();
+        
+        if (adminStatus) {
+            console.log('✅ 管理者です。管理者専用リンクを追加します。');
+            
+            // ナビゲーションリンクの親要素を取得
+            const navLinks = document.getElementById('navLinks');
+            const logoutBtn = document.getElementById('signOutBtn');
+            
+            if (navLinks && logoutBtn) {
+                // ログアウトボタンの前に管理者専用リンクを挿入
+                const adminLinks = [
+                    { href: 'admin.html', text: '管理画面' },
+                    { href: 'import.html', text: 'CSV一括インポート' },
+                    { href: 'login-history.html', text: 'ログイン履歴' },
+                    { href: 'admin-management.html', text: '管理者管理' },
+                    { href: 'prototype.html', text: '新デザイン確認', style: 'color: #FFF100;' }
+                ];
+                
+                adminLinks.forEach(link => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = link.href;
+                    a.textContent = link.text;
+                    if (link.style) {
+                        a.setAttribute('style', link.style);
+                    }
+                    li.appendChild(a);
+                    logoutBtn.parentElement.parentElement.insertBefore(li, logoutBtn.parentElement);
+                });
+            }
+        } else {
+            console.log('ℹ️ 一般ユーザーです。管理者専用リンクは表示しません。');
+        }
+    } catch (error) {
+        console.error('❌ 管理者チェックエラー:', error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', async function() {
+    // 管理者チェックして管理者専用リンクを追加
+    await checkAndAddAdminLinks();
+    
     // Firestoreからデータを読み込み
     loadHighPerformers();
     
