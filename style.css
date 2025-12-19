@@ -1348,6 +1348,66 @@ body.student-mode .mode-indicator {
     font-weight: bold;
 }
 
+.insights-subsection h4 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--color-blue);
+    margin-bottom: 12px;
+    margin-top: 0;
+}
+
+.insights-subsection p {
+    margin-bottom: 8px;
+    line-height: 1.8;
+    font-size: 15px;
+}
+
+.insights-subsection ul {
+    margin-top: 8px;
+    margin-bottom: 16px;
+    list-style: none;
+    padding-left: 0;
+}
+
+.insights-subsection ul li {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 8px;
+    line-height: 1.8;
+}
+
+.insights-subsection ul li::before {
+    content: "•";
+    position: absolute;
+    left: 8px;
+    color: var(--color-blue);
+    font-weight: bold;
+}
+
+.student-profile-section {
+    background: var(--color-primary-light);
+    padding: 24px;
+    border-radius: 8px;
+    margin-top: 30px;
+    border: 2px solid var(--color-accent);
+}
+
+.student-profile-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 16px;
+}
+
+.student-profile-list li {
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    background: var(--color-bg-card);
+    border-radius: 6px;
+    border-left: 4px solid var(--color-accent);
+    line-height: 1.6;
+    font-size: 15px;
+}
+
 @media (max-width: 768px) {
     .modal-overlay {
         padding: 20px 10px;
