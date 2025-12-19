@@ -1209,3 +1209,123 @@ body.student-mode .mode-indicator {
         padding: 8px 14px;
     }
 }
+
+/* ==========================================
+   モーダルスタイル（得られる知見の詳細）
+   ========================================== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 10000;
+    overflow-y: auto;
+    padding: 40px 20px;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+.modal-content-large {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-md);
+    max-width: 900px;
+    width: 100%;
+    box-shadow: var(--shadow-lg);
+    border: 2px solid var(--color-accent);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header-large {
+    padding: 30px;
+    background: var(--color-primary);
+    border-bottom: 3px solid var(--color-accent);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.modal-header-large h2 {
+    color: var(--color-accent);
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.modal-close-btn {
+    background: none;
+    border: none;
+    color: var(--color-text);
+    font-size: 36px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+    background: var(--color-primary-light);
+    color: var(--color-accent);
+}
+
+.modal-body-large {
+    padding: 40px;
+    color: var(--color-text);
+}
+
+.insights-section {
+    margin-bottom: 40px;
+}
+
+.insights-section:last-child {
+    margin-bottom: 0;
+}
+
+.insights-section p {
+    margin-bottom: 16px;
+    line-height: 1.8;
+    font-size: 15px;
+}
+
+.insights-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-accent);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--color-border);
+}
+
+@media (max-width: 768px) {
+    .modal-overlay {
+        padding: 20px 10px;
+    }
+    
+    .modal-header-large {
+        padding: 20px;
+    }
+    
+    .modal-header-large h2 {
+        font-size: 18px;
+    }
+    
+    .modal-body-large {
+        padding: 20px;
+    }
+}

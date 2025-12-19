@@ -280,18 +280,18 @@ window.openHPInsights = function(idx) {
     modalTitle.textContent = `💡 ${displayName}さんと話すことで得られる知見`;
     modalContent.innerHTML = displayInsights.split('｜').map(item => `<p>${escapeHtml(item)}</p>`).join('');
     
-    // モーダルを表示
-    modal.style.display = 'flex';
+    // モーダルを表示（CSSクラスで制御）
     modal.classList.add('show');
     document.body.style.overflow = 'hidden';
+    console.log('✅ モーダル表示完了');
 };
 
 window.closeInsightsModal = function() {
     const modal = document.getElementById('insightsModal');
     if (modal) {
         modal.classList.remove('show');
-        modal.style.display = 'none';
         document.body.style.overflow = 'auto';
+        console.log('✅ モーダル閉じる');
     }
 };
 
