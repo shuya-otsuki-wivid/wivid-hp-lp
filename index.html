@@ -272,6 +272,20 @@
         </div>
     </footer>
 
+    <!-- 得られる知見モーダル（静的定義） -->
+    <div id="insightsModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content-large" onclick="event.stopPropagation()">
+            <div class="modal-header-large">
+                <h2 id="modalTitle">💡 得られる知見</h2>
+                <button class="modal-close-btn" id="modalCloseBtn">&times;</button>
+            </div>
+            <div class="modal-body-large">
+                <div class="insights-section" id="modalInsightsContent">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="script.js"></script>
     
     <!-- ログアウト機能 -->

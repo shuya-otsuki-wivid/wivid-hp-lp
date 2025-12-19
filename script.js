@@ -28,6 +28,32 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // スムーススクロール
     initSmoothScroll();
+    
+    // モーダルのイベントリスナー設定
+    const modal = document.getElementById('insightsModal');
+    const closeBtn = document.getElementById('modalCloseBtn');
+    
+    if (modal) {
+        // 背景クリックで閉じる
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                window.closeInsightsModal();
+            }
+        });
+    }
+    
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            window.closeInsightsModal();
+        });
+    }
+    
+    // ESCキーでモーダルを閉じる
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            window.closeInsightsModal();
+        }
+    });
 });
 
 /* ==========================================
@@ -224,23 +250,13 @@ window.openHPInsights = function(idx) {
     const data = window.hpInsightsData[idx];
     if (!data) {
         console.error('❌ データが見つかりません:', idx);
+        alert('データが見つかりません');
         return;
     }
     
     const displayName = data.name;
     const displayInsights = data.insights;
     console.log('✅ データ取得成功:', { name: displayName, insightsLength: displayInsights.length });
-    
-    // モーダルが既に存在する場合は削除
-    const existingModal = document.getElementById('insightsModal');
-    if (existingModal) {
-        existingModal.remove();
-    }
-    
-    // モーダルを作成
-    const modal = document.createElement('div');
-    modal.id = 'insightsModal';
-    modal.className = 'modal-overlay';
     
     // HTMLエスケープ関数
     const escapeHtml = (str) => {
@@ -249,40 +265,33 @@ window.openHPInsights = function(idx) {
         return div.innerHTML;
     };
     
-    modal.innerHTML = `
-        <div class="modal-content-large" onclick="event.stopPropagation()">
-            <div class="modal-header-large">
-                <h2>💡 ${escapeHtml(displayName)}さんと話すことで得られる知見</h2>
-                <button class="modal-close-btn" onclick="closeInsightsModal()">&times;</button>
-            </div>
-            <div class="modal-body-large">
-                <div class="insights-section">
-                    ${displayInsights.split('｜').map(item => `<p>${escapeHtml(item)}</p>`).join('')}
-                </div>
-            </div>
-        </div>
-    `;
+    // 静的モーダルの内容を更新
+    const modal = document.getElementById('insightsModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalContent = document.getElementById('modalInsightsContent');
     
-    document.body.appendChild(modal);
+    if (!modal || !modalTitle || !modalContent) {
+        console.error('❌ モーダル要素が見つかりません');
+        alert('モーダル要素が見つかりません');
+        return;
+    }
+    
+    // タイトルと内容を設定
+    modalTitle.textContent = `💡 ${displayName}さんと話すことで得られる知見`;
+    modalContent.innerHTML = displayInsights.split('｜').map(item => `<p>${escapeHtml(item)}</p>`).join('');
     
     // モーダルを表示
-    setTimeout(() => {
-        modal.classList.add('show');
-    }, 10);
-    
-    // 背景クリックで閉じる
-    modal.addEventListener('click', function() {
-        closeInsightsModal();
-    });
+    modal.style.display = 'flex';
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
 };
 
 window.closeInsightsModal = function() {
     const modal = document.getElementById('insightsModal');
     if (modal) {
         modal.classList.remove('show');
-        setTimeout(() => {
-            modal.remove();
-        }, 300);
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
     }
 };
 
