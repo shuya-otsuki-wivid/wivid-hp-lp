@@ -234,14 +234,17 @@
         }
     </style>
     
-    <!-- Firebase認証チェック -->
+    <!-- Firebase認証チェック + 管理者チェック -->
     <script type="module">
         import { checkAuthState } from './auth.js';
+        import { requireAdmin } from './admin-check.js';
         
-        checkAuthState((authState) => {
+        checkAuthState(async (authState) => {
             if (!authState.authenticated) {
                 window.location.href = 'login.html';
             } else {
+                // 管理者チェック
+                await requireAdmin();
                 document.body.style.display = 'block';
             }
         });
@@ -264,6 +267,7 @@
                 <li><a href="admin.html" style="color: #FFF100;">管理画面</a></li>
                 <li><a href="import.html">CSV一括インポート</a></li>
                 <li><a href="login-history.html">ログイン履歴</a></li>
+                <li><a href="admin-management.html">管理者管理</a></li>
                 <li><a href="#" id="signOutBtn">ログアウト</a></li>
             </ul>
             <span class="nav-label" id="userEmail">管理画面</span>
