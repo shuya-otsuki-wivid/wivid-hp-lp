@@ -336,8 +336,9 @@ window.closeInsightsModal = function() {
    フィルター機能
    ========================================== */
 function initFilters() {
+    console.log('🎬 initFilters() 実行開始');
     const filterButtons = document.querySelectorAll('.filter-btn');
-    const hpCards = document.querySelectorAll('.hp-card, .hp-card-v2');
+    console.log('🔘 フィルターボタン数:', filterButtons.length);
     
     // 現在のフィルター状態
     const activeFilters = {
@@ -348,9 +349,13 @@ function initFilters() {
     
     filterButtons.forEach(button => {
         button.addEventListener('click', function() {
+            console.log('🖱️ フィルターボタンがクリックされました:', this.dataset.value);
+            
             const filterGroup = this.closest('.filter-buttons');
             const filterType = filterGroup.dataset.filter;
             const filterValue = this.dataset.value;
+            
+            console.log('📊 フィルタータイプ:', filterType, 'フィルター値:', filterValue);
             
             // ボタンのアクティブ状態を更新
             filterGroup.querySelectorAll('.filter-btn').forEach(btn => {
@@ -361,10 +366,14 @@ function initFilters() {
             // フィルター状態を更新
             activeFilters[filterType] = filterValue;
             
-            // カードをフィルタリング
+            // カードを動的に取得してフィルタリング
+            const hpCards = document.querySelectorAll('.hp-card, .hp-card-v2');
+            console.log('🎴 カード数:', hpCards.length);
             filterCards(hpCards, activeFilters);
         });
     });
+    
+    console.log('✅ initFilters() 完了');
 }
 
 function filterCards(cards, filters) {
